@@ -5,8 +5,8 @@ import 'package:newviewprac/widgets/button.dart';
 import 'package:newviewprac/widgets/typeMenu.dart';
 import 'package:newviewprac/widgets/typeResult.dart';
 
-class ViewThree extends StatelessWidget {
-  const ViewThree({super.key});
+class ViewDouble extends StatelessWidget {
+  const ViewDouble({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,25 +25,21 @@ class ViewThree extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Button(
-                        text: 'click',
-                        bgColor: Colors.white,
-                        textColor: Colors.amber,
-                      ),
+                      Text('1'),
                       SizedBox(
                         width: 20,
                       ),
                       Column(
                         children: [
-                          typeMenu(name: 'last sleep', time: '12:35'),
+                          Text('2'),
                           SizedBox(
                             height: 10,
                           ),
-                          typeMenu(name: 'last diper', time: '2:39'),
+                          Text('3'),
                           SizedBox(
                             height: 10,
                           ),
-                          typeMenu(name: 'last Three', time: '6:11'),
+                          Text('4'),
                         ],
                       )
                     ],
@@ -53,15 +49,15 @@ class ViewThree extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        typeResult(name: 'last one', time: '12:39'),
+                        Text('5'),
                         SizedBox(
                           height: 10,
                         ),
-                        typeResult(name: 'last two', time: '2:39'),
+                        Text('6'),
                         SizedBox(
                           height: 10,
                         ),
-                        typeResult(name: 'last two', time: '2:39'),
+                        Text('7'),
                       ],
                     ),
                   )

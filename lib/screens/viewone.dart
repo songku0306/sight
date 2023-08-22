@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:newviewprac/widgets/button.dart';
 import 'package:newviewprac/widgets/currency_card.dart';
 
-class viewOne extends StatelessWidget {
+class ViewOne extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

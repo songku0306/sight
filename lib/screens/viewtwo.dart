@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class viewTwo extends StatelessWidget {
+class ViewTwo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(debugShowCheckedModeBanner: false, home: Home());
