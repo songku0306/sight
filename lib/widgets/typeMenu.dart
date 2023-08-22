@@ -15,7 +15,7 @@ class typeMenu extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 300,
+          width: 200,
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
             color: Colors.blueGrey,
@@ -30,7 +30,7 @@ class typeMenu extends StatelessWidget {
                   child: Text(
                     name,
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 20,
                     ),
                   ),
                 ),
@@ -41,17 +41,17 @@ class typeMenu extends StatelessWidget {
                       name,
                       style: TextStyle(
                         color: Colors.white54,
-                        fontSize: 20,
+                        fontSize: 16,
                       ),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 8,
                     ),
                     Text(
                       time,
                       style: TextStyle(
                         color: Colors.white54,
-                        fontSize: 15,
+                        fontSize: 12,
                       ),
                     ),
                   ],

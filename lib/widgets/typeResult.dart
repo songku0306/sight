@@ -17,8 +17,14 @@ class typeResult extends StatelessWidget {
         Container(
           width: double.infinity,
           decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            color: Color.fromARGB(255, 116, 155, 175),
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color.fromRGBO(149, 97, 161, 1),
+                Color.fromRGBO(18, 34, 89, 1)
+              ],
+            ),
           ),
           child: Padding(
             padding: const EdgeInsets.all(5),

@@ -1,45 +1,45 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 import 'package:newviewprac/widgets/button.dart';
 import 'package:newviewprac/widgets/typeMenu.dart';
 import 'package:newviewprac/widgets/typeResult.dart';
 
 class viewThree extends StatelessWidget {
+  const viewThree({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         body: Container(
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color.fromRGBO(149, 97, 161, 1),
-                Color.fromRGBO(18, 34, 89, 1)
-              ],
-            ),
+            color: Color.fromARGB(255, 207, 196, 158),
           ),
           child: const Scaffold(
             backgroundColor: Colors.transparent,
             body: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(30.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Button(
                         text: 'click',
                         bgColor: Colors.white,
                         textColor: Colors.amber,
                       ),
+                      SizedBox(
+                        width: 20,
+                      ),
                       Column(
                         children: [
-                          typeMenu(name: 'last one', time: '12:35'),
+                          typeMenu(name: 'last sleep', time: '12:35'),
                           SizedBox(
                             height: 10,
                           ),
-                          typeMenu(name: 'last two', time: '2:39'),
+                          typeMenu(name: 'last diper', time: '2:39'),
                           SizedBox(
                             height: 10,
                           ),
