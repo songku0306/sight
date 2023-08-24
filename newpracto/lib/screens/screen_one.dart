@@ -20,7 +20,7 @@ class _ScreenOneState extends State<ScreenOne> {
             Expanded(
               flex: 1,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
                     width: 100,
@@ -38,7 +38,18 @@ class _ScreenOneState extends State<ScreenOne> {
                     height: 100,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.0),
-                      color: Colors.white,
+                      color: Colors.yellowAccent,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      color: Colors.grey,
                     ),
                   ),
                 ],
@@ -55,7 +66,7 @@ class _ScreenOneState extends State<ScreenOne> {
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.0),
+                        borderRadius: BorderRadius.circular(10.0),
                         color: Colors.white,
                       ),
                     ),
@@ -69,7 +80,7 @@ class _ScreenOneState extends State<ScreenOne> {
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.0),
+                        borderRadius: BorderRadius.circular(10.0),
                         color: Colors.white,
                       ),
                     ),
