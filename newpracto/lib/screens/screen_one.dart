@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:newpracto/widgets/button.dart';
 
 class ScreenOne extends StatefulWidget {
   const ScreenOne({super.key});
@@ -22,13 +23,10 @@ class _ScreenOneState extends State<ScreenOne> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
-                      color: Colors.white,
-                    ),
+                  ButtonMain(
+                    colors: Colors.black54,
+                    ht: 70,
+                    wd: 70,
                   ),
                   const SizedBox(
                     width: 20,
@@ -71,7 +69,7 @@ class _ScreenOneState extends State<ScreenOne> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Expanded(
