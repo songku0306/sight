@@ -50,57 +50,121 @@ class _MyHomePageState extends State<MyHomePage> {
               'cnter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            Row(
+            const SizedBox(
+              height: 20,
+            ),
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const CountScreen(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const CountScreen(),
+                          ),
+                        );
+                      },
+                      child: const ButtonMain(
+                        colors: Colors.redAccent,
+                        wd: 100,
+                        ht: 100,
                       ),
-                    );
-                  },
-                  child: const ButtonMain(
-                    colors: Colors.redAccent,
-                    wd: 100,
-                    ht: 100,
-                  ),
+                    ),
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const ScreenOne(),
+                          ),
+                        );
+                      },
+                      child: const ButtonMain(
+                        colors: Colors.greenAccent,
+                        wd: 150,
+                        ht: 100,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const ScreenTwo(),
+                          ),
+                        );
+                      },
+                      child: const ButtonMain(
+                        colors: Colors.blueGrey,
+                        wd: 100,
+                        ht: 100,
+                      ),
+                    )
+                  ],
                 ),
                 const SizedBox(
-                  width: 30,
+                  height: 40,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const ScreenOne(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const CountScreen(),
+                          ),
+                        );
+                      },
+                      child: ButtonMain(
+                        colors: Colors.yellow,
+                        wd: 100,
+                        ht: 100,
                       ),
-                    );
-                  },
-                  child: const ButtonMain(
-                    colors: Colors.greenAccent,
-                    wd: 150,
-                    ht: 100,
-                  ),
-                ),
-                const SizedBox(
-                  width: 30,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const ScreenTwo(),
+                    ),
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const ScreenOne(),
+                          ),
+                        );
+                      },
+                      child: const ButtonMain(
+                        colors: Colors.pinkAccent,
+                        wd: 150,
+                        ht: 100,
                       ),
-                    );
-                  },
-                  child: const ButtonMain(
-                    colors: Colors.blueGrey,
-                    wd: 100,
-                    ht: 100,
-                  ),
-                )
+                    ),
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const ScreenTwo(),
+                          ),
+                        );
+                      },
+                      child: const ButtonMain(
+                        colors: Colors.lightBlue,
+                        wd: 100,
+                        ht: 100,
+                      ),
+                    )
+                  ],
+                ),
               ],
             )
           ],
