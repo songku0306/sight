@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:newpracto/screens/countscreen.dart';
 import 'package:newpracto/screens/screen_one.dart';
 import 'package:newpracto/screens/screen_two.dart';
-import 'package:newpracto/widgets/button.dart';
+import 'package:newpracto/widgets/butttons.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

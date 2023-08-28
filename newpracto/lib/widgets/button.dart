@@ -1,25 +1,36 @@
 import 'package:flutter/material.dart';
 
-class ButtonMain extends StatelessWidget {
-  final double wd, ht;
+class Button extends StatelessWidget {
+  final String text;
+  final Color bgColor;
+  final Color textColor;
 
-  final Color colors;
-
-  const ButtonMain({
+  const Button({
     super.key,
-    required this.wd,
-    required this.ht,
-    required this.colors,
+    required this.text,
+    required this.bgColor,
+    required this.textColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: wd,
-      height: ht,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.0),
-        color: colors,
+        color: bgColor,
+        borderRadius: BorderRadius.circular(45),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 80,
+          horizontal: 80,
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            color: textColor,
+            fontSize: 20,
+          ),
+        ),
       ),
     );
   }
