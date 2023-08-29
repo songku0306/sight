@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:newpracto/screens/countsaved.dart';
 import 'package:newpracto/screens/countscreen.dart';
 import 'package:newpracto/screens/screen_one.dart';
 import 'package:newpracto/screens/screen_two.dart';
@@ -119,11 +120,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const CountScreen(),
+                            builder: (context) => const CountSaved(),
                           ),
                         );
                       },
-                      child: ButtonMain(
+                      child: const ButtonMain(
                         colors: Colors.yellow,
                         wd: 100,
                         ht: 100,
