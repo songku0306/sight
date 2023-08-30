@@ -3,6 +3,7 @@ import 'package:newpracto/screens/countsaved.dart';
 import 'package:newpracto/screens/countscreen.dart';
 import 'package:newpracto/screens/screen_one.dart';
 import 'package:newpracto/screens/screen_two.dart';
+import 'package:newpracto/screens/todo.dart';
 import 'package:newpracto/widgets/butttons.dart';
 
 class HomePage extends StatelessWidget {
@@ -55,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 20,
             ),
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -81,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const ScreenOne(),
+                            builder: (context) => const ScreenTwo(),
                           ),
                         );
                       },
@@ -98,7 +99,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const ScreenTwo(),
+                            builder: (context) => TodosScreen(
+                              todos: List.generate(
+                                20,
+                                (i) => Todo(
+                                  'Todo $i',
+                                  'A description of what needs to be done for Todo $i',
+                                ),
+                              ),
+                            ),
                           ),
                         );
                       },
@@ -111,7 +120,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
                 const SizedBox(
-                  height: 40,
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text('count'),
+                    Text('bank'),
+                    Text('todo'),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -165,6 +185,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )
                   ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text('savedcount'),
+                    Text('layouts'),
+                    Text('123414'),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
               ],
             )
