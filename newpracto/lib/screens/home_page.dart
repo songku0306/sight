@@ -201,6 +201,70 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(
                   height: 20,
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const CountSaved(),
+                          ),
+                        );
+                      },
+                      child: const TileForMenu(
+                        colors: Colors.blue,
+                        wd: 100,
+                        ht: 100,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const LayoutScreen(),
+                          ),
+                        );
+                      },
+                      child: const TileForMenu(
+                        colors: Colors.black87,
+                        wd: 150,
+                        ht: 100,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const TabBarPract(),
+                          ),
+                        );
+                      },
+                      child: const TileForMenu(
+                        colors: Colors.greenAccent,
+                        wd: 100,
+                        ht: 100,
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text('1'),
+                    Text('2'),
+                    Text('3'),
+                  ],
+                ),
               ],
             )
           ],
