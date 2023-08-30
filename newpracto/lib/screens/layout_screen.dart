@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:newpracto/screens/home_page.dart';
-import 'package:newpracto/widgets/butttons.dart';
+import 'package:newpracto/widgets/tile_for_menu.dart';
 
-class ScreenOne extends StatefulWidget {
-  const ScreenOne({super.key});
+class LayoutScreen extends StatefulWidget {
+  const LayoutScreen({super.key});
 
   @override
-  State<ScreenOne> createState() => _ScreenOneState();
+  State<LayoutScreen> createState() => _ScreenOneState();
 }
 
-class _ScreenOneState extends State<ScreenOne> {
+class _ScreenOneState extends State<LayoutScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -42,7 +42,7 @@ class _ScreenOneState extends State<ScreenOne> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const ButtonMain(
+                    const TileForMenu(
                       colors: Colors.black54,
                       ht: 70,
                       wd: 70,

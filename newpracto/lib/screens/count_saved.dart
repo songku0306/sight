@@ -1,10 +1,8 @@
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:newpracto/screens/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-
 
 class CountSaved extends StatelessWidget {
   const CountSaved({super.key});
@@ -52,10 +50,26 @@ class SharedPreferencesDemoState extends State<SharedPreferencesDemo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const HomePage(),
+              ),
+            );
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            size: 30,
+            color: Colors.blueGrey,
+          ),
+        ),
         title: const Text('SharedPreferences Demo'),
       ),
-      body: Center(
-          child: FutureBuilder<int>(
+      body: Column(
+        children: [
+          Center(
+            child: FutureBuilder<int>(
               future: _counter,
               builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                 switch (snapshot.connectionState) {
@@ -73,7 +87,11 @@ class SharedPreferencesDemoState extends State<SharedPreferencesDemo> {
                       );
                     }
                 }
-              })),
+              },
+            ),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',

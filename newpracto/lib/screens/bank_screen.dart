@@ -3,8 +3,8 @@ import 'package:newpracto/screens/home_page.dart';
 import 'package:newpracto/widgets/button.dart';
 import 'package:newpracto/widgets/currency_card.dart';
 
-class ScreenTwo extends StatelessWidget {
-  const ScreenTwo({super.key});
+class BankScreen extends StatelessWidget {
+  const BankScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

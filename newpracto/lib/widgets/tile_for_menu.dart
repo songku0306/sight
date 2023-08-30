@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ButtonMain extends StatelessWidget {
+class TileForMenu extends StatelessWidget {
   final double wd, ht;
 
   final Color colors;
 
-  const ButtonMain({
+  const TileForMenu({
     super.key,
     required this.wd,
     required this.ht,

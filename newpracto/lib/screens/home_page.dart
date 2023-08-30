@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:newpracto/screens/countsaved.dart';
-import 'package:newpracto/screens/countscreen.dart';
-import 'package:newpracto/screens/screen_one.dart';
-import 'package:newpracto/screens/screen_two.dart';
+import 'package:newpracto/screens/count_saved.dart';
+import 'package:newpracto/screens/count_screen.dart';
+import 'package:newpracto/screens/layout_screen.dart';
+import 'package:newpracto/screens/bank_screen.dart';
+import 'package:newpracto/screens/tap_screen.dart';
 import 'package:newpracto/screens/todo.dart';
-import 'package:newpracto/widgets/butttons.dart';
+import 'package:newpracto/widgets/tile_for_menu.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -69,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         );
                       },
-                      child: const ButtonMain(
+                      child: const TileForMenu(
                         colors: Colors.redAccent,
                         wd: 100,
                         ht: 100,
@@ -82,11 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const ScreenTwo(),
+                            builder: (context) => const BankScreen(),
                           ),
                         );
                       },
-                      child: const ButtonMain(
+                      child: const TileForMenu(
                         colors: Colors.greenAccent,
                         wd: 150,
                         ht: 100,
@@ -111,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         );
                       },
-                      child: const ButtonMain(
+                      child: const TileForMenu(
                         colors: Colors.blueGrey,
                         wd: 100,
                         ht: 100,
@@ -144,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         );
                       },
-                      child: const ButtonMain(
+                      child: const TileForMenu(
                         colors: Colors.yellow,
                         wd: 100,
                         ht: 100,
@@ -157,11 +158,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const ScreenOne(),
+                            builder: (context) => const LayoutScreen(),
                           ),
                         );
                       },
-                      child: const ButtonMain(
+                      child: const TileForMenu(
                         colors: Colors.pinkAccent,
                         wd: 150,
                         ht: 100,
@@ -174,11 +175,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const ScreenTwo(),
+                            builder: (context) => const TabBarPract(),
                           ),
                         );
                       },
-                      child: const ButtonMain(
+                      child: const TileForMenu(
                         colors: Colors.lightBlue,
                         wd: 100,
                         ht: 100,
@@ -194,7 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     Text('savedcount'),
                     Text('layouts'),
-                    Text('123414'),
+                    Text('tap bar'),
                   ],
                 ),
                 const SizedBox(
