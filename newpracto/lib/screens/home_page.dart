@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:newpracto/screens/chat_screen.dart';
 import 'package:newpracto/screens/count_saved.dart';
 import 'package:newpracto/screens/count_screen.dart';
 import 'package:newpracto/screens/layout_screen.dart';
@@ -209,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const TapBottom(),
+                            builder: (context) => const ChatScreen(),
                           ),
                         );
                       },
@@ -226,7 +227,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const LayoutScreen(),
+                            builder: (context) => const ChatScreen(),
                           ),
                         );
                       },
@@ -261,7 +262,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text('1'),
+                    Text('chat'),
                     Text('2'),
                     Text('3'),
                   ],
