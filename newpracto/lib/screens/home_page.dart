@@ -3,6 +3,7 @@ import 'package:newpracto/screens/count_saved.dart';
 import 'package:newpracto/screens/count_screen.dart';
 import 'package:newpracto/screens/layout_screen.dart';
 import 'package:newpracto/screens/bank_screen.dart';
+import 'package:newpracto/screens/tap_bottom.dart';
 import 'package:newpracto/screens/tap_screen.dart';
 import 'package:newpracto/screens/todo.dart';
 import 'package:newpracto/widgets/tile_for_menu.dart';
@@ -208,7 +209,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const CountSaved(),
+                            builder: (context) => const TapBottom(),
                           ),
                         );
                       },
