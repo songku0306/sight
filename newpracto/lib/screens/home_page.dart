@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:newpracto/screens/chat_screen.dart';
+import 'package:newpracto/screens/convers_screen.dart';
 import 'package:newpracto/screens/count_saved.dart';
 import 'package:newpracto/screens/count_screen.dart';
 import 'package:newpracto/screens/layout_screen.dart';
 import 'package:newpracto/screens/bank_screen.dart';
+import 'package:newpracto/screens/memo_screen.dart';
 import 'package:newpracto/screens/tap_bottom.dart';
 import 'package:newpracto/screens/tap_screen.dart';
 import 'package:newpracto/screens/todo.dart';
@@ -125,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text('count'),
@@ -192,7 +194,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text('savedcount'),
@@ -227,7 +229,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const CountSaved(),
+                            builder: (context) => const MemoScreen(),
                           ),
                         );
                       },
@@ -244,7 +246,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const TabBarPract(),
+                            builder: (context) => ConversationScreen(),
                           ),
                         );
                       },
@@ -259,12 +261,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text('chat'),
+                    Text('list'),
                     Text('memo'),
-                    Text('3'),
+                    Text('chatGPT'),
                   ],
                 ),
               ],
