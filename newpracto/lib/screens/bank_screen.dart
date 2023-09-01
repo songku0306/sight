@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:newpracto/screens/home_page.dart';
+import 'package:newpracto/screens/tap_bottom.dart';
 import 'package:newpracto/widgets/button.dart';
 import 'package:newpracto/widgets/currency_card.dart';
 
@@ -20,7 +21,7 @@ class BankScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
-                  height: 80,
+                  height: 20,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -34,7 +35,7 @@ class BankScreen extends StatelessWidget {
                         );
                       },
                       icon: const Icon(
-                        Icons.arrow_back_ios,
+                        Icons.home_filled,
                         size: 30,
                         color: Colors.blueGrey,
                       ),
@@ -62,7 +63,7 @@ class BankScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(
-                  height: 70,
+                  height: 30,
                 ),
                 Text(
                   'Total Balance',

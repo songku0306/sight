@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:newpracto/screens/home_page.dart';
+import 'package:newpracto/screens/tap_bottom.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      home: const TapBottom(),
     );
   }
 }

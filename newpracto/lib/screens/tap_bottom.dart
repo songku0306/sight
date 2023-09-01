@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:newpracto/screens/bank_screen.dart';
-import 'package:newpracto/screens/count_saved.dart';
+import 'package:newpracto/screens/home_page.dart';
 import 'package:newpracto/screens/layout_screen.dart';
-import 'package:newpracto/screens/todo.dart';
+
 
 class TapBottom extends StatefulWidget {
   const TapBottom({super.key});
@@ -15,7 +15,7 @@ class _TapBottomState extends State<TapBottom> {
   int _selectedIndex = 0;
   final List<Widget> _children = <Widget>[
     BankScreen(),
-    CountSaved(),
+    HomePage(),
     LayoutScreen(),
   ];
 

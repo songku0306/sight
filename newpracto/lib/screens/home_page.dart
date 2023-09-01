@@ -227,7 +227,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const ChatScreen(),
+                            builder: (context) => const CountSaved(),
                           ),
                         );
                       },
@@ -263,7 +263,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text('chat'),
-                    Text('2'),
+                    Text('memo'),
                     Text('3'),
                   ],
                 ),
