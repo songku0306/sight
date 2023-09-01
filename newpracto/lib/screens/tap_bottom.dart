@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:newpracto/screens/bank_screen.dart';
 import 'package:newpracto/screens/home_page.dart';
 import 'package:newpracto/screens/layout_screen.dart';
-
+import 'package:newpracto/screens/weather_screen.dart';
 
 class TapBottom extends StatefulWidget {
   const TapBottom({super.key});
@@ -14,7 +14,7 @@ class TapBottom extends StatefulWidget {
 class _TapBottomState extends State<TapBottom> {
   int _selectedIndex = 0;
   final List<Widget> _children = <Widget>[
-    BankScreen(),
+    WeatherScreen(),
     HomePage(),
     LayoutScreen(),
   ];
@@ -24,7 +24,6 @@ class _TapBottomState extends State<TapBottom> {
       _selectedIndex = index;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
