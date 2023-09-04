@@ -68,7 +68,7 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Baby Care App'),
+        title: const Text('데일리기록'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -142,7 +142,7 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () => addRecord('Sleep'),
+                  onPressed: () => navigateToDetailScreen(sleepRecords),
                   child: const Text('수면 기록 추가',
                       style: TextStyle(color: Colors.white)),
                 ),
