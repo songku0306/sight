@@ -150,12 +150,12 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
               shape: CircleBorder(), // 동그라미 모양의 버튼
               padding: EdgeInsets.all(20), // 버튼 주위의 여백 설정
               primary: Colors.blue, // 배경색을 변경하려면 primary 속성을 사용합니다.
-              onPrimary: Colors.white, // 텍스트 색상을 변경합니다.
             ),
             child: const Text(
               '수면',
               style: TextStyle(
                 fontSize: 20,
+                color: Colors.white,
               ),
             ),
           ),
@@ -167,12 +167,12 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
               shape: CircleBorder(), // 동그라미 모양의 버튼
               padding: EdgeInsets.all(20), // 버튼 주위의 여백 설정
               primary: Colors.green, // 배경색을 변경하려면 primary 속성을 사용합니다.
-              onPrimary: Colors.white, // 텍스트 색상을 변경합니다.
             ),
             child: const Text(
               '분유',
               style: TextStyle(
                 fontSize: 20,
+                color: Colors.white,
               ),
             ),
           ),
