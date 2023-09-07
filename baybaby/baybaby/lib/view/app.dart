@@ -1,5 +1,6 @@
 import 'package:baybaby/view/day_time.dart';
 import 'package:baybaby/view/profile.dart';
+import 'package:baybaby/view/week_time.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatefulWidget {
@@ -31,9 +32,9 @@ class _AppState extends State<App> {
       },
       selectedItemColor: Colors.black,
       items: <BottomNavigationBarItem>[
-        _bottomNavigationBarItem("home", "홈"),
-        _bottomNavigationBarItem("notes", "동네생활"),
-        _bottomNavigationBarItem("location", "내 근처"),
+        _bottomNavigationBarItem("home", "home"),
+        _bottomNavigationBarItem("notes", "List"),
+        _bottomNavigationBarItem("location", "Profile"),
       ],
     );
   }
@@ -70,10 +71,10 @@ class _AppState extends State<App> {
         return DayTimeView();
         break;
       case 1:
-        return Container();
+        return WeekTimeView();
         break;
       case 2:
-        return Container();
+        return ProfileView();
         break;
     }
     return Container();

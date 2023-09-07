@@ -46,11 +46,11 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
 
     setState(() {
       if (type == 'Sleep') {
-        sleepRecords.add(record);
+        sleepRecords.insert(0, record); // 상위에 추가
       } else if (type == 'Feeding') {
-        feedingRecords.add(record);
+        feedingRecords.insert(0, record); // 상위에 추가
       } else if (type == 'Diaper') {
-        diaperRecords.add(record);
+        diaperRecords.insert(0, record); // 상위에 추가
       }
     });
   }
@@ -145,17 +145,53 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
         children: [
           ElevatedButton(
             onPressed: () => addRecord('Sleep'),
-            child: const Text('수면 추가', style: TextStyle(color: Colors.white)),
+            style: ElevatedButton.styleFrom(
+              fixedSize: Size(80, 80),
+              shape: CircleBorder(), // 동그라미 모양의 버튼
+              padding: EdgeInsets.all(20), // 버튼 주위의 여백 설정
+              primary: Colors.blue, // 배경색을 변경하려면 primary 속성을 사용합니다.
+              onPrimary: Colors.white, // 텍스트 색상을 변경합니다.
+            ),
+            child: const Text(
+              '수면',
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
           ),
           const SizedBox(width: 10),
           ElevatedButton(
             onPressed: () => addRecord('Feeding'),
-            child: const Text('분유 추가', style: TextStyle(color: Colors.white)),
+            style: ElevatedButton.styleFrom(
+              fixedSize: Size(80, 80),
+              shape: CircleBorder(), // 동그라미 모양의 버튼
+              padding: EdgeInsets.all(20), // 버튼 주위의 여백 설정
+              primary: Colors.green, // 배경색을 변경하려면 primary 속성을 사용합니다.
+              onPrimary: Colors.white, // 텍스트 색상을 변경합니다.
+            ),
+            child: const Text(
+              '분유',
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
           ),
           const SizedBox(width: 10),
           ElevatedButton(
             onPressed: () => addRecord('Diaper'),
-            child: const Text('기저귀 추가', style: TextStyle(color: Colors.white)),
+            style: ElevatedButton.styleFrom(
+              fixedSize: Size(80, 80),
+              shape: CircleBorder(),
+              padding: EdgeInsets.all(20), // 버튼 주위의 여백 설정
+              primary: Colors.red, // 배경색을 변경하려면 primary 속성을 사용합니다.
+            ),
+            child: const Text(
+              '기저귀',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+              ),
+            ),
           ),
         ],
       ),
