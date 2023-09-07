@@ -136,39 +136,28 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
                 );
               }).toList(),
             ),
-
             const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () => navigateToDetailScreen(sleepRecords),
-                  child: const Text('수면 기록 추가',
-                      style: TextStyle(color: Colors.white)),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () => addRecord('Feeding'),
-                  child: const Text('분유 기록 추가',
-                      style: TextStyle(color: Colors.white)),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () => addRecord('Diaper'),
-                  child: const Text('기저귀 기록 추가',
-                      style: TextStyle(color: Colors.white)),
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () => navigateToDetailScreen(sleepRecords),
-              child:
-                  const Text('수면 기록 보기', style: TextStyle(color: Colors.white)),
-            ),
-            // 나머지 기록 보기 버튼도 동일하게 구성
           ],
         ),
+      ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton(
+            onPressed: () => addRecord('Sleep'),
+            child: const Text('수면 추가', style: TextStyle(color: Colors.white)),
+          ),
+          const SizedBox(width: 10),
+          ElevatedButton(
+            onPressed: () => addRecord('Feeding'),
+            child: const Text('분유 추가', style: TextStyle(color: Colors.white)),
+          ),
+          const SizedBox(width: 10),
+          ElevatedButton(
+            onPressed: () => addRecord('Diaper'),
+            child: const Text('기저귀 추가', style: TextStyle(color: Colors.white)),
+          ),
+        ],
       ),
     );
   }

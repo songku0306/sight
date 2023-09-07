@@ -34,8 +34,6 @@ class _AppState extends State<App> {
         _bottomNavigationBarItem("home", "홈"),
         _bottomNavigationBarItem("notes", "동네생활"),
         _bottomNavigationBarItem("location", "내 근처"),
-        _bottomNavigationBarItem("chat", "채팅"),
-        _bottomNavigationBarItem("user", "나의 당근"),
       ],
     );
   }
@@ -52,12 +50,6 @@ class _AppState extends State<App> {
         break;
       case "location":
         iconData = Icons.location_city;
-        break;
-      case "chat":
-        iconData = Icons.chat;
-        break;
-      case "user":
-        iconData = Icons.person;
         break;
       default:
         iconData = Icons.home;
@@ -82,12 +74,6 @@ class _AppState extends State<App> {
         break;
       case 2:
         return Container();
-        break;
-      case 3:
-        return Container();
-        break;
-      case 4:
-        return ProfileView();
         break;
     }
     return Container();
