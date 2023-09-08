@@ -24,7 +24,7 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('데일리기록'),
+          title: const Text('위클리기록'),
         ),
         body: ShoppingApp());
   }

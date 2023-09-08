@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class Product {
   final String name;
-  final String description;
-  final double price;
+  final String sub;
+  final String date;
   final IconData iconData; // IconData 추가
 
   Product({
     required this.name,
-    required this.description,
-    required this.price,
+    required this.sub,
+    required this.date,
     required this.iconData,
   });
 }
@@ -17,100 +17,28 @@ class Product {
 class ShoppingApp extends StatelessWidget {
   final List<Product> products = [
     Product(
-      name: '상품 1',
-      description: '상품 1의 상세 설명입니다.',
-      price: 29.99,
+      name: 'sleep : 7hrs \nfeed : 5 \ndiper : 5',
+      sub: '',
+      date: '9 / 8',
       iconData: Icons.home,
     ),
     Product(
-      name: '상품 2',
-      description: '상품 2의 상세 설명입니다.',
-      price: 19.99,
-      iconData: Icons.search,
+      name: 'sleep : 7hrs \nfeed : 5 \ndiper : 5',
+      sub: '',
+      date: '9 / 7',
+      iconData: Icons.flip_camera_android_outlined,
     ),
     Product(
-      name: '상품 1',
-      description: '상품 1의 상세 설명입니다.',
-      price: 29.99,
+      name: 'sleep : 7hrs \nfeed : 5 \ndiper : 5',
+      sub: '',
+      date: '9 / 6',
       iconData: Icons.home,
     ),
     Product(
-      name: '상품 2',
-      description: '상품 2의 상세 설명입니다.',
-      price: 19.99,
-      iconData: Icons.search,
-    ),
-    Product(
-      name: '상품 1',
-      description: '상품 1의 상세 설명입니다.',
-      price: 29.99,
-      iconData: Icons.home,
-    ),
-    Product(
-      name: '상품 2',
-      description: '상품 2의 상세 설명입니다.',
-      price: 19.99,
-      iconData: Icons.search,
-    ),
-    Product(
-      name: '상품 1',
-      description: '상품 1의 상세 설명입니다.',
-      price: 29.99,
-      iconData: Icons.home,
-    ),
-    Product(
-      name: '상품 2',
-      description: '상품 2의 상세 설명입니다.',
-      price: 19.99,
-      iconData: Icons.search,
-    ),
-    Product(
-      name: '상품 1',
-      description: '상품 1의 상세 설명입니다.',
-      price: 29.99,
-      iconData: Icons.home,
-    ),
-    Product(
-      name: '상품 2',
-      description: '상품 2의 상세 설명입니다.',
-      price: 19.99,
-      iconData: Icons.search,
-    ),
-    Product(
-      name: '상품 1',
-      description: '상품 1의 상세 설명입니다.',
-      price: 29.99,
-      iconData: Icons.home,
-    ),
-    Product(
-      name: '상품 2',
-      description: '상품 2의 상세 설명입니다.',
-      price: 19.99,
-      iconData: Icons.search,
-    ),
-    Product(
-      name: '상품 1',
-      description: '상품 1의 상세 설명입니다.',
-      price: 29.99,
-      iconData: Icons.home,
-    ),
-    Product(
-      name: '상품 2',
-      description: '상품 2의 상세 설명입니다.',
-      price: 19.99,
-      iconData: Icons.search,
-    ),
-    Product(
-      name: '상품 1',
-      description: '상품 1의 상세 설명입니다.',
-      price: 29.99,
-      iconData: Icons.home,
-    ),
-    Product(
-      name: '상품 2',
-      description: '상품 2의 상세 설명입니다.',
-      price: 19.99,
-      iconData: Icons.search,
+      name: 'sleep : 7hrs \nfeed : 5 \ndiper : 5',
+      sub: '',
+      date: '9 / 5',
+      iconData: Icons.flip_camera_android_outlined,
     ),
     // 다른 상품들을 추가할 수 있습니다.
   ];
@@ -133,25 +61,21 @@ class ShoppingApp extends StatelessWidget {
                 size: 80,
                 color: Colors.blue,
               ),
-              title: Text(product.name),
-              subtitle: Text(product.description),
-              trailing: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    '\$${product.price.toStringAsFixed(2)}',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
+              title: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Text(product.name),
+              ),
+              subtitle: Text(product.sub),
+              trailing: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  product.date,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.amber,
+                    fontSize: 30,
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // 구매 버튼을 눌렀을 때 동작
-                    },
-                    child: Text('구매'),
-                  ),
-                ],
+                ),
               ),
             );
           },

@@ -1,3 +1,6 @@
+import 'dart:html';
+
+import 'package:baybaby/widget/week_list.dart';
 import 'package:flutter/material.dart';
 
 class ProfileView extends StatelessWidget {
@@ -15,29 +18,48 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('프로필'),
+        title: const Text('프로필'),
       ),
-      body: Center(
+      body: const Padding(
+        padding: EdgeInsets.all(20),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
-              radius: 80,
-              backgroundImage:
-                  AssetImage('assets/profile_image.jpg'), // 프로필 이미지 파일 경로
-            ),
-            SizedBox(height: 16),
-            Text(
-              '홍길동',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 80,
+                  backgroundImage:
+                      AssetImage('assets/profile_image.jpg'), // 프로필 이미지 파일 경로
+                ),
+                SizedBox(width: 16),
+                Column(
+                  children: [
+                    Text(
+                      '홍길동',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      '2023/06/13',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
             SizedBox(height: 8),
             Text(
-              '개발자',
+              '선택사항',
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey,
@@ -45,7 +67,6 @@ class ProfileScreen extends StatelessWidget {
             ),
             SizedBox(height: 16),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.email),
                 SizedBox(width: 8),
@@ -59,7 +80,6 @@ class ProfileScreen extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.phone),
                 SizedBox(width: 8),
