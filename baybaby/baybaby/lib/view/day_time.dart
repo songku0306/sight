@@ -36,6 +36,9 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
   List<BabyCareRecord> sleepRecords = [];
   List<BabyCareRecord> feedingRecords = [];
   List<BabyCareRecord> diaperRecords = [];
+  List<Widget> sleepRecordsButton = [];
+  List<Widget> feedingRecordsButton = [];
+  List<Widget> diaperRecordsButton = [];
 
   void addRecord(String type) {
     final now = DateTime.now();
@@ -46,11 +49,59 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
 
     setState(() {
       if (type == 'Sleep') {
-        sleepRecords.insert(0, record); // 상위에 추가
+        sleepRecords.insert(0, record);
+        // 스위치 동작 시 '수면' ElevatedButton 추가
+        sleepRecordsButton.add(
+          ElevatedButton(
+            onPressed: () => navigateToDetailScreen(sleepRecords),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.blue,
+            ),
+            child: Text(
+              '수면',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        );
       } else if (type == 'Feeding') {
-        feedingRecords.insert(0, record); // 상위에 추가
+        feedingRecords.insert(0, record);
+        // 스위치 동작 시 '분유' ElevatedButton 추가
+        feedingRecordsButton.add(
+          ElevatedButton(
+            onPressed: () => navigateToDetailScreen(feedingRecords),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.green,
+            ),
+            child: Text(
+              '분유',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        );
       } else if (type == 'Diaper') {
-        diaperRecords.insert(0, record); // 상위에 추가
+        diaperRecords.insert(0, record);
+        // 스위치 동작 시 '기저귀' ElevatedButton 추가
+        diaperRecordsButton.add(
+          ElevatedButton(
+            onPressed: () => navigateToDetailScreen(diaperRecords),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.red,
+            ),
+            child: Text(
+              '기저귀',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        );
       }
     });
   }

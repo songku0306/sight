@@ -1,7 +1,6 @@
 import 'package:baybaby/view/day_time.dart';
 import 'package:baybaby/view/profile.dart';
 import 'package:baybaby/view/week_time.dart';
-import 'package:baybaby/widget/week_list.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatefulWidget {
@@ -70,13 +69,10 @@ class _AppState extends State<App> {
     switch (_currentPageIndex) {
       case 0:
         return DayTimeView();
-        break;
       case 1:
         return WeekTimeView();
-        break;
       case 2:
         return ProfileView();
-        break;
     }
     return Container();
   }
