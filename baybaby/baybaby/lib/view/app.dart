@@ -1,4 +1,5 @@
 import 'package:baybaby/view/day_time.dart';
+import 'package:baybaby/view/home.dart';
 import 'package:baybaby/view/profile.dart';
 import 'package:baybaby/view/week_time.dart';
 import 'package:flutter/material.dart';
