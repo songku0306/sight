@@ -48,17 +48,17 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
     );
 
     setState(() {
-      if (type == 'Sleep') {
-        sleepRecords.insert(0, record);
+      if (type == 'Diaper') {
+        diaperRecords.insert(0, record);
         // 스위치 동작 시 '수면' ElevatedButton 추가
         sleepRecordsButton.add(
           ElevatedButton(
-            onPressed: () => navigateToDetailScreen(sleepRecords),
+            onPressed: () => navigateToDetailScreen(diaperRecords),
             style: ElevatedButton.styleFrom(
               primary: Colors.blue,
             ),
             child: Text(
-              '수면',
+              '기저귀',
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.white,
@@ -84,17 +84,17 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
             ),
           ),
         );
-      } else if (type == 'Diaper') {
-        diaperRecords.insert(0, record);
+      } else if (type == 'Sleep') {
+        sleepRecords.insert(0, record);
         // 스위치 동작 시 '기저귀' ElevatedButton 추가
         diaperRecordsButton.add(
           ElevatedButton(
-            onPressed: () => navigateToDetailScreen(diaperRecords),
+            onPressed: () => navigateToDetailScreen(sleepRecords),
             style: ElevatedButton.styleFrom(
               primary: Colors.red,
             ),
             child: Text(
-              '기저귀',
+              '수면',
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.white,
@@ -125,67 +125,114 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text(
-                '수면',
-                style: TextStyle(fontSize: 20, color: Colors.blue),
+            const SizedBox(height: 30), // 30픽셀의 공간 추가
+
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                border: Border.all(
+                  width: 8,
+                ),
+                borderRadius: BorderRadius.circular(12),
               ),
-            ),
-            DataTable(
-              columns: const <DataColumn>[
-                DataColumn(
-                    label: Text('수면', style: TextStyle(color: Colors.blue))),
-              ],
-              rows: sleepRecords.map((record) {
-                return DataRow(
-                  cells: <DataCell>[
-                    DataCell(Text(record.date)),
-                  ],
-                );
-              }).toList(),
+              child: DataTable(
+                columns: const <DataColumn>[
+                  DataColumn(
+                      label: Text('기저귀',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                          ))),
+                ],
+                rows: sleepRecords.map((record) {
+                  return DataRow(
+                    color: MaterialStateProperty.resolveWith<Color?>(
+                        (Set<MaterialState> states) {
+                      // 특정 상태에 따라 행의 색상을 설정합니다.
+                      if (states.contains(MaterialState.pressed)) {
+                        return Colors.blueAccent; // 선택된 경우
+                      }
+                      return Colors
+                          .lightBlue; // 기본 색상 (null로 설정하면 테마의 색상을 사용합니다)
+                    }),
+                    cells: <DataCell>[
+                      DataCell(Text(record.date)),
+                    ],
+                  );
+                }).toList(),
+              ),
             ),
             const SizedBox(height: 30), // 30픽셀의 공간 추가
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text(
-                '분유',
-                style: TextStyle(fontSize: 20, color: Colors.green),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.green,
+                border: Border.all(
+                  width: 8,
+                ),
+                borderRadius: BorderRadius.circular(12),
               ),
-            ),
-            DataTable(
-              columns: const <DataColumn>[
-                DataColumn(
-                    label: Text('분유', style: TextStyle(color: Colors.green))),
-              ],
-              rows: feedingRecords.map((record) {
-                return DataRow(
-                  cells: <DataCell>[
-                    DataCell(Text(record.date)),
-                  ],
-                );
-              }).toList(),
+              child: DataTable(
+                columns: const <DataColumn>[
+                  DataColumn(
+                      label: Text('분유',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                          ))),
+                ],
+                rows: feedingRecords.map((record) {
+                  return DataRow(
+                    color: MaterialStateProperty.resolveWith<Color?>(
+                        (Set<MaterialState> states) {
+                      // 특정 상태에 따라 행의 색상을 설정합니다.
+                      if (states.contains(MaterialState.pressed)) {
+                        return Colors.green; // 선택된 경우
+                      }
+                      return Colors
+                          .lightGreen; // 기본 색상 (null로 설정하면 테마의 색상을 사용합니다)
+                    }),
+                    cells: <DataCell>[
+                      DataCell(Text(record.date)),
+                    ],
+                  );
+                }).toList(),
+              ),
             ),
             const SizedBox(height: 30), // 30픽셀의 공간 추가
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text(
-                '기저귀',
-                style: TextStyle(fontSize: 20, color: Colors.red),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.red,
+                border: Border.all(
+                  width: 8,
+                ),
+                borderRadius: BorderRadius.circular(12),
               ),
-            ),
-            DataTable(
-              columns: const <DataColumn>[
-                DataColumn(
-                    label: Text('기저귀', style: TextStyle(color: Colors.red))),
-              ],
-              rows: diaperRecords.map((record) {
-                return DataRow(
-                  cells: <DataCell>[
-                    DataCell(Text(record.date)),
-                  ],
-                );
-              }).toList(),
+              child: DataTable(
+                columns: const <DataColumn>[
+                  DataColumn(
+                      label: Text('수면',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                          ))),
+                ],
+                rows: diaperRecords.map((record) {
+                  return DataRow(
+                    color: MaterialStateProperty.resolveWith<Color?>(
+                        (Set<MaterialState> states) {
+                      // 특정 상태에 따라 행의 색상을 설정합니다.
+                      if (states.contains(MaterialState.pressed)) {
+                        return Colors.redAccent; // 선택된 경우
+                      }
+                      return Colors
+                          .redAccent; // 기본 색상 (null로 설정하면 테마의 색상을 사용합니다)
+                    }),
+                    cells: <DataCell>[
+                      DataCell(Text(record.date)),
+                    ],
+                  );
+                }).toList(),
+              ),
             ),
             const SizedBox(height: 30),
           ],
@@ -203,7 +250,7 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
               primary: Colors.blue, // 배경색을 변경하려면 primary 속성을 사용합니다.
             ),
             child: const Text(
-              '수면',
+              '기저귀',
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.white,
@@ -237,7 +284,7 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
               primary: Colors.red, // 배경색을 변경하려면 primary 속성을 사용합니다.
             ),
             child: const Text(
-              '기저귀',
+              '수면',
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.white,
