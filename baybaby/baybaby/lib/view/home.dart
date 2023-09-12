@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:baybaby/view/detail_view.dart';
 
 class BabyCareRecord {
   final String type;
@@ -10,159 +11,155 @@ class BabyCareRecord {
   });
 }
 
-class BabyCareScreen extends StatefulWidget {
-  @override
-  _BabyCareScreenState createState() => _BabyCareScreenState();
-}
+class BabyCareScreen extends StatelessWidget {
+  final List<BabyCareRecord> diaperRecords;
+  final List<BabyCareRecord> feedingRecords;
+  final List<BabyCareRecord> sleepRecords;
+  final VoidCallback addDiaperRecord;
+  final VoidCallback addFeedingRecord;
+  final VoidCallback addSleepRecord;
+  final void Function(String, int) deleteRecord;
+  final void Function(List<BabyCareRecord>) navigateToDetailScreen;
 
-class _BabyCareScreenState extends State<BabyCareScreen> {
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  final List<BabyCareRecord> records = [];
-  int selectedIndex = -1;
+  BabyCareScreen({
+    required this.diaperRecords,
+    required this.feedingRecords,
+    required this.sleepRecords,
+    required this.addDiaperRecord,
+    required this.addFeedingRecord,
+    required this.addSleepRecord,
+    required this.deleteRecord,
+    required this.navigateToDetailScreen,
+  });
 
-  void addRecord(String type) {
-    final now = DateTime.now();
-    final record = BabyCareRecord(
-      type: type,
-      date: '${now.year}-${now.month}-${now.day} ${now.hour}:${now.minute}',
+  Widget buildDataTable(List<BabyCareRecord> records, String title, Color color) {
+    return Container(
+      decoration: BoxDecoration(
+        color: color,
+        border: Border.all(
+          width: 8,
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: DataTable(
+        columns: const <DataColumn>[
+          DataColumn(
+            label: Text(
+              title,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+              ),
+            ),
+          ),
+        ],
+        rows: records.map((record) {
+          return DataRow(
+            onLongPress: () => deleteRecord(record.type, records.indexOf(record)),
+            color: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+              if (states.contains(MaterialState.pressed)) {
+                return color.withOpacity(0.6);
+              }
+              return color;
+            }),
+            cells: <DataCell>[
+              DataCell(Text(record.date)),
+            ],
+          );
+        }).toList(),
+      ),
     );
+  }
 
-    setState(() {
-      records.insert(0, record);
-      _listKey.currentState?.insertItem(0);
-    });
+  Widget buildFloatingActionButton(String type, Color color, VoidCallback onPressed) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        fixedSize: Size(80, 80),
+        shape: CircleBorder(),
+        padding: EdgeInsets.all(20),
+        primary: color,
+      ),
+      child: Text(
+        type,
+        style: TextStyle(
+          fontSize: 20,
+          color: Colors.white,
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white38,
         title: const Text('데일리기록'),
-      ),
-      body: AnimatedList(
-        key: _listKey,
-        initialItemCount: records.length,
-        itemBuilder: (context, index, animation) {
-          final record = records[index];
-
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                selectedIndex = index;
-              });
-
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return RecordDetailPage(record: record);
-                  },
-                ),
-              );
-            },
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 500),
-              decoration: BoxDecoration(
-                color: selectedIndex == index ? Colors.blue : Colors.transparent,
-                border: Border.all(color: Colors.blue),
+        actions: [
+          ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              fixedSize: Size(80, 80),
+              shape: BeveledRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
               ),
-              padding: EdgeInsets.all(16.0),
-              child: Text(
-                record.type,
-                style: TextStyle(
-                  fontSize: 20,
-                  color: selectedIndex == index ? Colors.white : Colors.black,
-                ),
+              padding: EdgeInsets.all(5),
+              primary: Colors.deepOrange,
+            ),
+            child: const Text(
+              '마감',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
               ),
             ),
-          );
-        },
+          ),
+          SizedBox(
+            width: 40,
+          )
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              buildDataTable(diaperRecords, '기저귀', Colors.blue),
+              const SizedBox(height: 30),
+              buildDataTable(feedingRecords, '분유', Colors.green),
+              const SizedBox(height: 30),
+              buildDataTable(sleepRecords, '수면', Colors.red),
+              const SizedBox(height: 30),
+            ],
+          ),
+        ),
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ElevatedButton(
-            onPressed: () => addRecord('Sleep'),
-            style: ElevatedButton.styleFrom(
-              fixedSize: Size(80, 80),
-              shape: CircleBorder(),
-              padding: EdgeInsets.all(20),
-              primary: Colors.blue,
-            ),
-            child: const Text(
-              '수면',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          SizedBox(width: 10),
-          ElevatedButton(
-            onPressed: () => addRecord('Feeding'),
-            style: ElevatedButton.styleFrom(
-              fixedSize: Size(80, 80),
-              shape: CircleBorder(),
-              padding: EdgeInsets.all(20),
-              primary: Colors.green,
-            ),
-            child: const Text(
-              '분유',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          SizedBox(width: 10),
-          ElevatedButton(
-            onPressed: () => addRecord('Diaper'),
-            style: ElevatedButton.styleFrom(
-              fixedSize: Size(80, 80),
-              shape: CircleBorder(),
-              padding: EdgeInsets.all(20),
-              primary: Colors.red,
-            ),
-            child: const Text(
-              '기저귀',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-              ),
-            ),
-          ),
+          buildFloatingActionButton('기저귀', Colors.blue, addDiaperRecord),
+          const SizedBox(width: 10),
+          buildFloatingActionButton('분유', Colors.green, addFeedingRecord),
+          const SizedBox(width: 10),
+          buildFloatingActionButton('수면', Colors.red, addSleepRecord),
         ],
       ),
     );
   }
 }
 
-class RecordDetailPage extends StatelessWidget {
-  final BabyCareRecord record;
+void main() {
+  final diaperRecords = <BabyCareRecord>[];
+  final feedingRecords = <BabyCareRecord>[];
+  final sleepRecords = <BabyCareRecord>[];
 
-  RecordDetailPage({required this.record});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(record.type),
-      ),
-      body: Center(
-        child: Hero(
-          tag: 'record_${record.type}',
-          child: Container(
-            color: Colors.blue, // 테이블과 같은 색상
-            padding: EdgeInsets.all(16.0),
-            child: Text(
-              record.type,
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  runApp(
+    DayTimeView(
+      diaperRecords: diaperRecords,
+      feedingRecords: feedingRecords,
+      sleepRecords: sleepRecords,
+    ),
+  );
 }
