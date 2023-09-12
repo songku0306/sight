@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 class BabyCareRecord {
   final String type;
   final String date;
+  final String? textfield;
 
   BabyCareRecord({
     required this.type,
     required this.date,
+    this.textfield,
   });
 }
 
@@ -16,9 +18,6 @@ class DayTimeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Baby Care App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       home: BabyCareScreen(),
     );
   }
@@ -42,9 +41,18 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
 
   void addRecord(String type) {
     final now = DateTime.now();
+    int hour = now.hour;
+    String amPm = 'AM';
+
+    if (hour >= 12) {
+      amPm = 'PM';
+      if (hour > 12) {
+        hour -= 12;
+      }
+    }
     final record = BabyCareRecord(
       type: type,
-      date: '${now.year}-${now.month}-${now.day} ${now.hour}:${now.minute}',
+      date: ' ${now.second}  ${now.month}/${now.day} $hour:${now.minute} $amPm',
     );
 
     setState(() {
@@ -99,6 +107,23 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
             ),
           ),
         );
+      }
+    });
+  }
+
+  void deleteRecord(String type, int index) {
+    setState(() {
+      if (type == 'Diaper' && index >= 0 && index < diaperRecords.length) {
+        diaperRecords.removeAt(index); // 레코드 목록에서 해당 인덱스의 항목 삭제
+        diaperRecordsButton.removeAt(index); // 버튼 목록에서 해당 인덱스의 항목 삭제
+      } else if (type == 'Feeding' &&
+          index >= 0 &&
+          index < feedingRecords.length) {
+        feedingRecords.removeAt(index);
+        feedingRecordsButton.removeAt(index);
+      } else if (type == 'Sleep' && index >= 0 && index < sleepRecords.length) {
+        sleepRecords.removeAt(index);
+        sleepRecordsButton.removeAt(index);
       }
     });
   }
@@ -168,6 +193,10 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
                   ],
                   rows: diaperRecords.map((record) {
                     return DataRow(
+                      onLongPress: () => deleteRecord(
+                          'Diaper',
+                          diaperRecords
+                              .indexOf(record)), // 'Diaper' 타입과 해당 레코드의 인덱스 전달
                       color: MaterialStateProperty.resolveWith<Color?>(
                           (Set<MaterialState> states) {
                         // 특정 상태에 따라 행의 색상을 설정합니다.
@@ -204,6 +233,10 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
                   ],
                   rows: feedingRecords.map((record) {
                     return DataRow(
+                      onLongPress: () => deleteRecord(
+                          'Feeding',
+                          feedingRecords.indexOf(
+                              record)), // 'Diaper' 타입과 해당 레코드의 인덱스 전달),
                       color: MaterialStateProperty.resolveWith<Color?>(
                           (Set<MaterialState> states) {
                         // 특정 상태에 따라 행의 색상을 설정합니다.
@@ -240,6 +273,10 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
                   ],
                   rows: sleepRecords.map((record) {
                     return DataRow(
+                      onLongPress: () => deleteRecord(
+                          'Sleep',
+                          sleepRecords.indexOf(
+                              record)), // 'Diaper' 타입과 해당 레코드의 인덱스 전달),
                       color: MaterialStateProperty.resolveWith<Color?>(
                           (Set<MaterialState> states) {
                         // 특정 상태에 따라 행의 색상을 설정합니다.
