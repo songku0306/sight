@@ -141,7 +141,7 @@ class _MenuListState extends State<MenuList> {
               primary: Colors.blue, // 배경색을 변경하려면 primary 속성을 사용합니다.
             ),
             child: const Text(
-              '수면',
+              '기저귀',
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.white,
@@ -175,7 +175,7 @@ class _MenuListState extends State<MenuList> {
               primary: Colors.red, // 배경색을 변경하려면 primary 속성을 사용합니다.
             ),
             child: const Text(
-              '기저귀',
+              '수면',
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.white,
