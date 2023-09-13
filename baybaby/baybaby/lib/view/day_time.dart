@@ -33,6 +33,8 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
   final TextEditingController sleepTimeController = TextEditingController();
   final TextEditingController feedingTimeController = TextEditingController();
   final TextEditingController diaperTimeController = TextEditingController();
+  final TextEditingController feedingAmountController =
+      TextEditingController(); // 추가
 
   List<BabyCareRecord> sleepRecords = [];
   List<BabyCareRecord> feedingRecords = [];
@@ -75,26 +77,24 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
             ),
           ),
         );
-      }
-      // else if (type == 'Feeding') {
-      //   feedingRecords.insert(0, record);
-      //   feedingRecordsButton.add(
-      //     ElevatedButton(
-      //       onPressed: () => navigateToDetailScreen(feedingRecords),
-      //       style: ElevatedButton.styleFrom(
-      //         primary: Colors.green,
-      //       ),
-      //       child: Text(
-      //         '분유',
-      //         style: TextStyle(
-      //           fontSize: 20,
-      //           color: Colors.white,
-      //         ),
-      //       ),
-      //     ),
-      //   );
-      // }
-      else if (type == 'Sleep') {
+      } else if (type == 'Feeding') {
+        feedingRecords.insert(0, record);
+        feedingRecordsButton.add(
+          ElevatedButton(
+            onPressed: () => navigateToDetailScreen(feedingRecords),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.green,
+            ),
+            child: Text(
+              '분유',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        );
+      } else if (type == 'Sleep') {
         sleepRecords.insert(0, record);
         sleepRecordsButton.add(
           ElevatedButton(
@@ -116,9 +116,12 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
   }
 
   void addRecordFromButton(String ml) {
+    final ml = feedingAmountController.text;
     final record = BabyCareRecord(
       type: 'Feeding',
-      date: '' + 'ml',
+      date: ml + 'ml',
+      textfieldController:
+          TextEditingController(text: ml), // TextEditingController에 분유 양 설정
     );
 
     setState(() {
@@ -248,6 +251,26 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
                 ),
               ),
               const SizedBox(height: 30), // 30픽셀의 공간 추가
+              Transform.translate(
+                offset: const Offset(20, 10),
+                child: Container(
+                  width: 200,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 20,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.lightGreen,
+                    border: Border.all(
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: TextField(
+                    controller: feedingAmountController, // 컨트롤러 할당
+                    decoration: InputDecoration(hintText: '분유양을 입력해주세요!'),
+                  ),
+                ),
+              ),
               Container(
                 decoration: BoxDecoration(
                   color: Colors.green,
@@ -259,20 +282,11 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
                 child: DataTable(
                   columns: const <DataColumn>[
                     DataColumn(
-                      label: Row(
-                        children: [
-                          Text('분유',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                              )),
-                          TextField(),
-                          Icon(
-                            Icons.favorite,
-                            color: Colors.amber,
-                          ),
-                        ],
-                      ),
+                      label: Text('분유',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                          )),
                     ),
                   ],
                   rows: feedingRecords.map((record) {
@@ -363,7 +377,10 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
           ),
           const SizedBox(width: 10),
           ElevatedButton(
-            onPressed: () => addRecordFromButton('Feeding'),
+            onPressed: () {
+              addRecordFromButton('Feeding');
+              addRecord('Feeding');
+            },
             style: ElevatedButton.styleFrom(
               fixedSize: Size(80, 80),
               shape: CircleBorder(), // 동그라미 모양의 버튼
