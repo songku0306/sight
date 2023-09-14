@@ -77,23 +77,6 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
             ),
           ),
         );
-      } else if (type == 'Feeding') {
-        feedingRecords.insert(0, record);
-        feedingRecordsButton.add(
-          ElevatedButton(
-            onPressed: () => navigateToDetailScreen(feedingRecords),
-            style: ElevatedButton.styleFrom(
-              primary: Colors.green,
-            ),
-            child: Text(
-              '분유',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        );
       } else if (type == 'Sleep') {
         sleepRecords.insert(0, record);
         sleepRecordsButton.add(
@@ -115,32 +98,60 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
     });
   }
 
-  void addRecordFromButton(String ml) {
+  void addRecordFromButton(String type) {
+    final now = DateTime.now();
+    int hour = now.hour;
+    String amPm = 'AM';
+    if (hour >= 12) {
+      amPm = 'PM';
+      if (hour > 12) {
+        hour -= 12;
+      }
+    }
+
     final ml = feedingAmountController.text;
     final record = BabyCareRecord(
-      type: 'Feeding',
-      date: ml + 'ml',
-      textfieldController:
-          TextEditingController(text: ml), // TextEditingController에 분유 양 설정
+      type: type,
+      date: ml + ' ml  ' + '${now.month}/${now.day} $hour:${now.minute} $amPm',
+      textfieldController: TextEditingController(text: ml),
     );
 
     setState(() {
-      feedingRecords.insert(0, record);
-      feedingRecordsButton.add(
-        ElevatedButton(
-          onPressed: () => navigateToDetailScreen(feedingRecords),
-          style: ElevatedButton.styleFrom(
-            primary: Colors.green,
-          ),
-          child: Text(
-            '분유',
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.white,
+      if (type == 'Feeding') {
+        feedingRecords.insert(0, record);
+        feedingRecordsButton.add(
+          ElevatedButton(
+            onPressed: () => navigateToDetailScreen(feedingRecords),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.green,
+            ),
+            child: Text(
+              '분유',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+              ),
             ),
           ),
-        ),
-      );
+        );
+      } else {
+        feedingRecords.insert(0, record);
+        feedingRecordsButton.add(
+          ElevatedButton(
+            onPressed: () => navigateToDetailScreen(feedingRecords),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.green,
+            ),
+            child: Text(
+              '분유',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        );
+      }
     });
   }
 
@@ -251,26 +262,7 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
                 ),
               ),
               const SizedBox(height: 30), // 30픽셀의 공간 추가
-              Transform.translate(
-                offset: const Offset(20, 10),
-                child: Container(
-                  width: 200,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.lightGreen,
-                    border: Border.all(
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: TextField(
-                    controller: feedingAmountController, // 컨트롤러 할당
-                    decoration: InputDecoration(hintText: '분유양을 입력해주세요!'),
-                  ),
-                ),
-              ),
+
               Container(
                 decoration: BoxDecoration(
                   color: Colors.green,
@@ -356,61 +348,83 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
           ),
         ),
       ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          ElevatedButton(
-            onPressed: () => addRecord('Diaper'),
-            style: ElevatedButton.styleFrom(
-              fixedSize: Size(80, 80),
-              shape: CircleBorder(), // 동그라미 모양의 버튼
-              padding: EdgeInsets.all(20), // 버튼 주위의 여백 설정
-              primary: Colors.blue, // 배경색을 변경하려면 primary 속성을 사용합니다.
+          Container(
+            width: 150,
+            padding: EdgeInsets.symmetric(
+              horizontal: 20,
             ),
-            child: const Text(
-              '기저귀',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
+            decoration: BoxDecoration(
+              color: Colors.lightGreen,
+              border: Border.all(
+                width: 2,
               ),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: TextField(
+              controller: feedingAmountController, // 컨트롤러 할당
+              decoration: InputDecoration(hintText: '분유양을 입력해주세요!'),
             ),
           ),
-          const SizedBox(width: 10),
-          ElevatedButton(
-            onPressed: () {
-              addRecordFromButton('Feeding');
-              addRecord('Feeding');
-            },
-            style: ElevatedButton.styleFrom(
-              fixedSize: Size(80, 80),
-              shape: CircleBorder(), // 동그라미 모양의 버튼
-              padding: EdgeInsets.all(20), // 버튼 주위의 여백 설정
-              primary: Colors.green, // 배경색을 변경하려면 primary 속성을 사용합니다.
-            ),
-            child: const Text(
-              '분유',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () => addRecord('Diaper'),
+                style: ElevatedButton.styleFrom(
+                  fixedSize: Size(80, 80),
+                  shape: CircleBorder(), // 동그라미 모양의 버튼
+                  padding: EdgeInsets.all(20), // 버튼 주위의 여백 설정
+                  primary: Colors.blue, // 배경색을 변경하려면 primary 속성을 사용합니다.
+                ),
+                child: const Text(
+                  '기저귀',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                ),
               ),
-            ),
-          ),
-          const SizedBox(width: 10),
-          ElevatedButton(
-            onPressed: () => addRecord('Sleep'),
-            style: ElevatedButton.styleFrom(
-              fixedSize: Size(80, 80),
-              shape: CircleBorder(),
-              padding: EdgeInsets.all(20), // 버튼 주위의 여백 설정
-              primary: Colors.red, // 배경색을 변경하려면 primary 속성을 사용합니다.
-            ),
-            child: const Text(
-              '수면',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
+              const SizedBox(width: 20),
+              ElevatedButton(
+                onPressed: () {
+                  addRecordFromButton('Feeding');
+                  addRecord('Feeding');
+                },
+                style: ElevatedButton.styleFrom(
+                  fixedSize: Size(80, 80),
+                  shape: CircleBorder(), // 동그라미 모양의 버튼
+                  padding: EdgeInsets.all(20), // 버튼 주위의 여백 설정
+                  primary: Colors.green, // 배경색을 변경하려면 primary 속성을 사용합니다.
+                ),
+                child: const Text(
+                  '분유',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                ),
               ),
-            ),
+              const SizedBox(width: 20),
+              ElevatedButton(
+                onPressed: () => addRecord('Sleep'),
+                style: ElevatedButton.styleFrom(
+                  fixedSize: Size(80, 80),
+                  shape: CircleBorder(),
+                  padding: EdgeInsets.all(20), // 버튼 주위의 여백 설정
+                  primary: Colors.red, // 배경색을 변경하려면 primary 속성을 사용합니다.
+                ),
+                child: const Text(
+                  '수면',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
