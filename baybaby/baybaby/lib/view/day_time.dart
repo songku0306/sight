@@ -6,11 +6,17 @@ class BabyCareRecord {
   final String type;
   final String date;
   final TextEditingController? textfieldController; // TextEditingController 추가
+  final double? feedingAmount; // 수유량 (ml)
+  final Duration? sleepTime; // 수면 시간 (시간:분)
+  final int? diaperCount; // 기저귀 횟수
 
   BabyCareRecord({
     required this.type,
     required this.date,
     this.textfieldController, // TextEditingController로 변경
+    this.feedingAmount,
+    this.sleepTime,
+    this.diaperCount,
   });
 }
 
@@ -43,7 +49,8 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
   List<Widget> feedingRecordsButton = [];
   List<Widget> diaperRecordsButton = [];
 
-  void addRecord(String type) {
+  void addRecord(String type,
+      {double? feedingAmount, Duration? sleepTime, int? diaperCount}) {
     final now = DateTime.now();
     int hour = now.hour;
     String amPm = 'AM';
@@ -57,6 +64,9 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
     final record = BabyCareRecord(
       type: type,
       date: ' ${now.second}  ${now.month}/${now.day} $hour:${now.minute} $amPm',
+      feedingAmount: feedingAmount,
+      sleepTime: sleepTime,
+      diaperCount: diaperCount,
     );
 
     setState(() {
@@ -179,6 +189,36 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
         builder: (context) => DetailView(records: records),
       ),
     );
+  }
+
+  double calculateTotalFeedingAmount() {
+    double totalAmount = 0.0;
+    for (var record in feedingRecords) {
+      if (record.feedingAmount != null) {
+        totalAmount += record.feedingAmount!;
+      }
+    }
+    return totalAmount;
+  }
+
+  Duration calculateTotalSleepTime() {
+    Duration totalSleep = Duration.zero;
+    for (var record in sleepRecords) {
+      if (record.sleepTime != null) {
+        totalSleep += record.sleepTime!;
+      }
+    }
+    return totalSleep;
+  }
+
+  int calculateTotalDiaperCount() {
+    int totalDiaperCount = 0;
+    for (var record in diaperRecords) {
+      if (record.diaperCount != null) {
+        totalDiaperCount += record.diaperCount!;
+      }
+    }
+    return totalDiaperCount;
   }
 
   @override
