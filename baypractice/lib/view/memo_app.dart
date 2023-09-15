@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-void main() {
-  runApp(MemoApp());
-}
-
 class MemoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
