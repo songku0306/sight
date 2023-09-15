@@ -1,6 +1,7 @@
 import 'package:baybaby/view/detail_view.dart';
 import 'package:baybaby/view/temporary.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; // provider 패키지를 import 합니다.
 
 class BabyCareRecord {
   final String type;
@@ -223,251 +224,311 @@ class _BabyCareScreenState extends State<BabyCareScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white38,
-        title: const Text('데일리기록'),
-        actions: [
-          ElevatedButton(
-            onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MemoApp(),
-                )),
-            style: ElevatedButton.styleFrom(
-              fixedSize: Size(80, 80),
-              shape: BeveledRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0), // 모서리 둥근 정도 설정
-              ),
+    return ChangeNotifierProvider(
+      create: (context) =>
+          DailyReportProvider(), // DailyReportProvider를 생성하고 제공합니다.
 
-              padding: EdgeInsets.all(5), // 버튼 주위의 여백 설정
-              primary: Colors.deepOrange, // 배경색을 변경하려면 primary 속성을 사용합니다.
-            ),
-            child: const Text(
-              '마감',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          SizedBox(
-            width: 40,
-          )
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  border: Border.all(
-                    width: 8,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white38,
+          title: const Text('데일리기록'),
+          actions: [
+            ElevatedButton(
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MemoApp(),
+                  )),
+              style: ElevatedButton.styleFrom(
+                fixedSize: Size(80, 80),
+                shape: BeveledRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0), // 모서리 둥근 정도 설정
                 ),
-                child: DataTable(
-                  columns: const <DataColumn>[
-                    DataColumn(
-                        label: Text('기저귀',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                            ))),
-                  ],
-                  rows: diaperRecords.map((record) {
-                    return DataRow(
-                      onLongPress: () => deleteRecord(
-                          'Diaper',
-                          diaperRecords
-                              .indexOf(record)), // 'Diaper' 타입과 해당 레코드의 인덱스 전달
-                      color: MaterialStateProperty.resolveWith<Color?>(
-                          (Set<MaterialState> states) {
-                        // 특정 상태에 따라 행의 색상을 설정합니다.
-                        if (states.contains(MaterialState.pressed)) {
-                          return Colors.blueAccent; // 선택된 경우
-                        }
-                        return Colors
-                            .lightBlue; // 기본 색상 (null로 설정하면 테마의 색상을 사용합니다)
-                      }),
-                      cells: <DataCell>[
-                        DataCell(Text(record.date)),
-                      ],
-                    );
-                  }).toList(),
-                ),
-              ),
-              const SizedBox(height: 30), // 30픽셀의 공간 추가
 
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  border: Border.all(
-                    width: 8,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
+                padding: EdgeInsets.all(5), // 버튼 주위의 여백 설정
+                primary: Colors.deepOrange, // 배경색을 변경하려면 primary 속성을 사용합니다.
+              ),
+              child: const Text(
+                '마감',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
                 ),
-                child: DataTable(
-                  columns: const <DataColumn>[
-                    DataColumn(
-                      label: Text('분유',
+              ),
+            ),
+            SizedBox(
+              width: 40,
+            )
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                // 데일리 리포트
+                // Provider로부터 데이터를 사용하여 데일리 리포트를 표시합니다.
+                Consumer<DailyReportProvider>(
+                  builder: (context, dailyReportProvider, child) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          '데일리 리포트',
                           style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                          )),
-                    ),
-                  ],
-                  rows: feedingRecords.map((record) {
-                    return DataRow(
-                      onLongPress: () => deleteRecord(
-                          'Feeding',
-                          feedingRecords.indexOf(
-                              record)), // 'Diaper' 타입과 해당 레코드의 인덱스 전달),
-                      color: MaterialStateProperty.resolveWith<Color?>(
-                          (Set<MaterialState> states) {
-                        // 특정 상태에 따라 행의 색상을 설정합니다.
-                        if (states.contains(MaterialState.pressed)) {
-                          return Colors.greenAccent; // 선택된 경우
-                        }
-                        return Colors
-                            .lightGreen; // 기본 색상 (null로 설정하면 테마의 색상을 사용합니다)
-                      }),
-                      cells: <DataCell>[
-                        DataCell(Text(record.date)),
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                            '총 수유량: ${dailyReportProvider.totalFeedingAmount} ml'),
+                        Text(
+                          '총 수면 시간: ${dailyReportProvider.totalSleepHours}시간 ${dailyReportProvider.totalSleepMinutes}분',
+                        ),
+                        Text(
+                            '총 기저귀 횟수: ${dailyReportProvider.totalDiaperCount}회'),
                       ],
                     );
-                  }).toList(),
+                  },
                 ),
-              ),
-              const SizedBox(height: 30), // 30픽셀의 공간 추가
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  border: Border.all(
-                    width: 8,
+
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    border: Border.all(
+                      width: 8,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  borderRadius: BorderRadius.circular(12),
+                  child: DataTable(
+                    columns: const <DataColumn>[
+                      DataColumn(
+                          label: Text('기저귀',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ))),
+                    ],
+                    rows: diaperRecords.map((record) {
+                      return DataRow(
+                        onLongPress: () => deleteRecord(
+                            'Diaper',
+                            diaperRecords.indexOf(
+                                record)), // 'Diaper' 타입과 해당 레코드의 인덱스 전달
+                        color: MaterialStateProperty.resolveWith<Color?>(
+                            (Set<MaterialState> states) {
+                          // 특정 상태에 따라 행의 색상을 설정합니다.
+                          if (states.contains(MaterialState.pressed)) {
+                            return Colors.blueAccent; // 선택된 경우
+                          }
+                          return Colors
+                              .lightBlue; // 기본 색상 (null로 설정하면 테마의 색상을 사용합니다)
+                        }),
+                        cells: <DataCell>[
+                          DataCell(Text(record.date)),
+                        ],
+                      );
+                    }).toList(),
+                  ),
                 ),
-                child: DataTable(
-                  columns: const <DataColumn>[
-                    DataColumn(
-                        label: Text('수면',
+                const SizedBox(height: 30), // 30픽셀의 공간 추가
+
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    border: Border.all(
+                      width: 8,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: DataTable(
+                    columns: const <DataColumn>[
+                      DataColumn(
+                        label: Text('분유',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 20,
-                            ))),
-                  ],
-                  rows: sleepRecords.map((record) {
-                    return DataRow(
-                      onLongPress: () => deleteRecord(
-                          'Sleep',
-                          sleepRecords.indexOf(
-                              record)), // 'Diaper' 타입과 해당 레코드의 인덱스 전달),
-                      color: MaterialStateProperty.resolveWith<Color?>(
-                          (Set<MaterialState> states) {
-                        // 특정 상태에 따라 행의 색상을 설정합니다.
-                        if (states.contains(MaterialState.pressed)) {
-                          return Colors.redAccent; // 선택된 경우
-                        }
-                        return Colors
-                            .redAccent; // 기본 색상 (null로 설정하면 테마의 색상을 사용합니다)
-                      }),
-                      cells: <DataCell>[
-                        DataCell(Text(record.date)),
-                      ],
-                    );
-                  }).toList(),
+                            )),
+                      ),
+                    ],
+                    rows: feedingRecords.map((record) {
+                      return DataRow(
+                        onLongPress: () => deleteRecord(
+                            'Feeding',
+                            feedingRecords.indexOf(
+                                record)), // 'Diaper' 타입과 해당 레코드의 인덱스 전달),
+                        color: MaterialStateProperty.resolveWith<Color?>(
+                            (Set<MaterialState> states) {
+                          // 특정 상태에 따라 행의 색상을 설정합니다.
+                          if (states.contains(MaterialState.pressed)) {
+                            return Colors.greenAccent; // 선택된 경우
+                          }
+                          return Colors
+                              .lightGreen; // 기본 색상 (null로 설정하면 테마의 색상을 사용합니다)
+                        }),
+                        cells: <DataCell>[
+                          DataCell(Text(record.date)),
+                        ],
+                      );
+                    }).toList(),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 30),
-            ],
+                const SizedBox(height: 30), // 30픽셀의 공간 추가
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    border: Border.all(
+                      width: 8,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: DataTable(
+                    columns: const <DataColumn>[
+                      DataColumn(
+                          label: Text('수면',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ))),
+                    ],
+                    rows: sleepRecords.map((record) {
+                      return DataRow(
+                        onLongPress: () => deleteRecord(
+                            'Sleep',
+                            sleepRecords.indexOf(
+                                record)), // 'Diaper' 타입과 해당 레코드의 인덱스 전달),
+                        color: MaterialStateProperty.resolveWith<Color?>(
+                            (Set<MaterialState> states) {
+                          // 특정 상태에 따라 행의 색상을 설정합니다.
+                          if (states.contains(MaterialState.pressed)) {
+                            return Colors.redAccent; // 선택된 경우
+                          }
+                          return Colors
+                              .redAccent; // 기본 색상 (null로 설정하면 테마의 색상을 사용합니다)
+                        }),
+                        cells: <DataCell>[
+                          DataCell(Text(record.date)),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+                ),
+                const SizedBox(height: 30),
+              ],
+            ),
           ),
         ),
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Container(
-            width: 150,
-            padding: EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.lightGreen,
-              border: Border.all(
-                width: 2,
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Container(
+              width: 150,
+              padding: EdgeInsets.symmetric(
+                horizontal: 20,
               ),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: TextField(
-              controller: feedingAmountController, // 컨트롤러 할당
-              decoration: InputDecoration(hintText: '분유양을 입력해주세요!'),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () => addRecord('Diaper'),
-                style: ElevatedButton.styleFrom(
-                  fixedSize: Size(80, 80),
-                  shape: CircleBorder(), // 동그라미 모양의 버튼
-                  padding: EdgeInsets.all(20), // 버튼 주위의 여백 설정
-                  primary: Colors.blue, // 배경색을 변경하려면 primary 속성을 사용합니다.
+              decoration: BoxDecoration(
+                color: Colors.lightGreen,
+                border: Border.all(
+                  width: 2,
                 ),
-                child: const Text(
-                  '기저귀',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: TextField(
+                controller: feedingAmountController, // 컨트롤러 할당
+                decoration: InputDecoration(hintText: '분유양을 입력해주세요!'),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () => addRecord('Diaper'),
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(80, 80),
+                    shape: CircleBorder(), // 동그라미 모양의 버튼
+                    padding: EdgeInsets.all(20), // 버튼 주위의 여백 설정
+                    primary: Colors.blue, // 배경색을 변경하려면 primary 속성을 사용합니다.
+                  ),
+                  child: const Text(
+                    '기저귀',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 20),
-              ElevatedButton(
-                onPressed: () {
-                  addRecordFromButton('Feeding');
-                  addRecord('Feeding');
-                },
-                style: ElevatedButton.styleFrom(
-                  fixedSize: Size(80, 80),
-                  shape: CircleBorder(), // 동그라미 모양의 버튼
-                  padding: EdgeInsets.all(20), // 버튼 주위의 여백 설정
-                  primary: Colors.green, // 배경색을 변경하려면 primary 속성을 사용합니다.
-                ),
-                child: const Text(
-                  '분유',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
+                const SizedBox(width: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    addRecordFromButton('Feeding');
+                    addRecord('Feeding');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(80, 80),
+                    shape: CircleBorder(), // 동그라미 모양의 버튼
+                    padding: EdgeInsets.all(20), // 버튼 주위의 여백 설정
+                    primary: Colors.green, // 배경색을 변경하려면 primary 속성을 사용합니다.
+                  ),
+                  child: const Text(
+                    '분유',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 20),
-              ElevatedButton(
-                onPressed: () => addRecord('Sleep'),
-                style: ElevatedButton.styleFrom(
-                  fixedSize: Size(80, 80),
-                  shape: CircleBorder(),
-                  padding: EdgeInsets.all(20), // 버튼 주위의 여백 설정
-                  primary: Colors.red, // 배경색을 변경하려면 primary 속성을 사용합니다.
-                ),
-                child: const Text(
-                  '수면',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
+                const SizedBox(width: 20),
+                ElevatedButton(
+                  onPressed: () => addRecord('Sleep'),
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(80, 80),
+                    shape: CircleBorder(),
+                    padding: EdgeInsets.all(20), // 버튼 주위의 여백 설정
+                    primary: Colors.red, // 배경색을 변경하려면 primary 속성을 사용합니다.
+                  ),
+                  child: const Text(
+                    '수면',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
+  }
+}
+
+// DailyReportProvider 클래스 정의
+class DailyReportProvider with ChangeNotifier {
+  double _totalFeedingAmount = 0.0;
+  Duration _totalSleepTime = Duration.zero;
+  int _totalDiaperCount = 0;
+
+  // Getter 메서드를 사용하여 데이터를 노출합니다.
+  double get totalFeedingAmount => _totalFeedingAmount;
+  int get totalSleepHours => _totalSleepTime.inHours;
+  int get totalSleepMinutes => _totalSleepTime.inMinutes % 60;
+  int get totalDiaperCount => _totalDiaperCount;
+
+  // 데이터를 업데이트하는 메서드를 정의합니다.
+  void updateFeedingAmount(double amount) {
+    _totalFeedingAmount += amount;
+    notifyListeners(); // 상태 변경을 알립니다.
+  }
+
+  void updateSleepTime(Duration time) {
+    _totalSleepTime += time;
+    notifyListeners();
+  }
+
+  void updateDiaperCount(int count) {
+    _totalDiaperCount += count;
+    notifyListeners();
   }
 }
