@@ -1,25 +1,7 @@
-import 'package:baynursingroom/data/api_data.dart';
-import 'package:baynursingroom/widgets/api_app.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart' as xml;
 import 'package:xml2json/xml2json.dart';
-
-void main() {
-  runApp(NursingRoomApp());
-}
-
-class NursingRoomApp extends StatelessWidget {
-  const NursingRoomApp({Key? key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Nursing Room App',
-      home: NursingRoomScreen(),
-    );
-  }
-}
 
 class NursingRoomScreen extends StatefulWidget {
   @override
@@ -31,70 +13,28 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
   String serviceKey =
       'a3GptWb07Pi1Gxv7GDsZ195JQT%2BehIA65OSl04QTsSyaxeTIMA6Y7ZMOa9tIv7ywXzaqW5lWgpU4fjoRTT1lDA%3D%3D';
 
-  bool isLoading = false; // 데이터 로딩 상태 플래그 추가
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
     fetchData();
-    fetchNursingroomInfo(); // fetchNursingroomInfo 함수를 호출하도록 추가
-  }
-
-  Future<List<NursingRoomInfo>> fetchNursingRoomData() async {
-    final apiUrl = Uri.parse(
-        'http://apis.data.go.kr/6260000/BusanNursingroomInfoService/getNursingroomInfo?serviceKey=$serviceKey&numOfRows=5&pageNo=1');
-
-    final queryParams = {
-      'serviceKey': serviceKey,
-      'numOfRows': '10',
-      'pageNo': '1',
-      'sj': '영도도서관',
-      'resultType': 'json', // XML 형식으로 요청
-    };
-
-    final response =
-        await http.get(apiUrl.replace(queryParameters: queryParams));
-
-    if (response.statusCode == 200) {
-      final document = xml.XmlDocument.parse(response.body);
-      final items = document.findAllElements('item');
-
-      final List<NursingRoomInfo> data = items.map((element) {
-        return NursingRoomInfo(
-          tel: element.findElements('tel').single.text,
-          sj: element.findElements('sj').single.text,
-          address: element.findElements('address').single.text,
-          place: element.findElements('place').single.text,
-          sido: element.findElements('sido').single.text,
-          sigungu: element.findElements('sigungu').single.text,
-          target: element.findElements('target').single.text,
-          father: element.findElements('father').single.text,
-          lng: double.parse(element.findElements('lng').single.text),
-          lat: double.parse(element.findElements('lat').single.text),
-          confirmDate: element.findElements('confirm_date').single.text,
-        );
-      }).toList();
-
-      return data;
-    } else {
-      throw Exception('Failed to load nursing room data');
-    }
   }
 
   Future<void> fetchData() async {
     try {
       setState(() {
-        isLoading = true; // 데이터 로딩 시작
+        isLoading = true;
       });
 
       final data = await fetchNursingRoomData();
       setState(() {
         nursingRooms = data;
-        isLoading = false; // 데이터 로딩 완료
+        isLoading = false;
       });
     } catch (e) {
       setState(() {
-        isLoading = false; // 데이터 로딩 실패
+        isLoading = false;
       });
 
       showDialog(
@@ -106,7 +46,7 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop(); // 경고창 닫기
+                  Navigator.of(context).pop();
                 },
                 child: Text('확인'),
               ),
@@ -119,44 +59,149 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
     }
   }
 
-  void fetchNursingroomInfo() async {
-    final response = await http.get(
-      Uri.parse(
-          'http://apis.data.go.kr/6260000/BusanNursingroomInfoService/getNursingroomInfo?serviceKey=$serviceKey&numOfRows=5&pageNo=1'),
-    );
+  Future<List<NursingRoomInfo>> fetchNursingRoomData() async {
+    final apiUrl = Uri.parse(
+        'http://apis.data.go.kr/6260000/BusanNursingroomInfoService/getNursingroomInfo?serviceKey=$serviceKey&numOfRows=5&pageNo=1');
+
+    final queryParams = {
+      'serviceKey': serviceKey,
+      'numOfRows': '10',
+      'pageNo': '1',
+      'sj': '영도도서관',
+      'resultType': 'json',
+    };
+
+    final response = await http.get(apiUrl);
 
     if (response.statusCode == 200) {
-      Xml2Json xml2Json = Xml2Json();
-      xml2Json.parse(response.body);
-      var jsonData = xml2Json.toParker();
+      final document = xml.XmlDocument.parse(response.body);
+      final items = document.findAllElements('item');
 
-      // 이제 jsonData는 JSON 형식이므로, 필요한 정보를 추출하여 UI에 표시할 수 있습니다.
+      final List<NursingRoomInfo> data = items.map((element) {
+        return NursingRoomInfo.fromJson({
+          'tel': element.findElements('tel').single.text,
+          'sj': element.findElements('sj').single.text,
+          'address': element.findElements('address').single.text,
+          'place': element.findElements('place').single.text,
+          'sido': element.findElements('sido').single.text,
+          'sigungu': element.findElements('sigungu').single.text,
+          'target': element.findElements('target').single.text,
+          'father': element.findElements('father').single.text,
+          'lng': double.parse(element.findElements('lng').single.text),
+          'lat': double.parse(element.findElements('lat').single.text),
+          'confirm_date': element.findElements('confirm_date').single.text,
+        });
+      }).toList();
 
-      print(jsonData);
+      return data;
     } else {
-      throw Exception('Failed to load data');
+      throw Exception('Failed to load nursing room data');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          '부산 수유실',
-          style: TextStyle(
-            color: Colors.black,
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Text(
+            '부산 수유실',
+            style: TextStyle(
+              color: Colors.black,
+            ),
           ),
         ),
+        body: Center(
+          child: isLoading
+              ? CircularProgressIndicator()
+              : nursingRooms.isNotEmpty
+                  ? NursingRoomList(nursingRooms: nursingRooms)
+                  : Text('데이터가 없습니다.'),
+        ),
       ),
-      body: Center(
-        child: isLoading
-            ? CircularProgressIndicator()
-            : nursingRooms.isNotEmpty
-                ? NursingRoomList(nursingRooms: nursingRooms)
-                : Text('데이터가 없습니다.'), // 데이터가 없는 경우에 메시지 출력
-      ),
+    );
+  }
+}
+
+class NursingRoomList extends StatelessWidget {
+  final List<NursingRoomInfo> nursingRooms;
+
+  NursingRoomList({required this.nursingRooms});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: nursingRooms.length,
+      itemBuilder: (context, index) {
+        final item = nursingRooms[index];
+        return Card(
+          margin: EdgeInsets.all(8.0),
+          child: ListTile(
+            title: Text('이름: ${item.sj}'),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('주소: ${item.address}'),
+                Text('전화번호: ${item.tel}'),
+                Text('장소명: ${item.place}'),
+                Text('시도: ${item.sido}'),
+                Text('시군구: ${item.sigungu}'),
+                Text('타겟: ${item.target}'),
+                Text('아빠: ${item.father}'),
+                Text('확인일: ${item.confirmDate}'),
+                Text('위도: ${item.lat}'),
+                Text('경도: ${item.lng}'),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class NursingRoomInfo {
+  final String tel;
+  final String sj;
+  final String address;
+  final String place;
+  final String sido;
+  final String sigungu;
+  final String target;
+  final String father;
+  final double lng;
+  final double lat;
+  final String confirmDate;
+
+  NursingRoomInfo({
+    required this.tel,
+    required this.sj,
+    required this.address,
+    required this.place,
+    required this.sido,
+    required this.sigungu,
+    required this.target,
+    required this.father,
+    required this.lng,
+    required this.lat,
+    required this.confirmDate,
+  });
+
+  factory NursingRoomInfo.fromJson(Map<String, dynamic> json) {
+    return NursingRoomInfo(
+      tel: json['tel'],
+      sj: json['sj'],
+      address: json['address'],
+      place: json['place'],
+      sido: json['sido'],
+      sigungu: json['sigungu'],
+      target: json['target'],
+      father: json['father'],
+      lng: double.parse(json['lng']),
+      lat: double.parse(json['lat']),
+      confirmDate: json['confirm_date'],
     );
   }
 }
