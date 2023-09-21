@@ -1,8 +1,187 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:xml/xml.dart' as xml;
+import 'package:xml2json/xml2json.dart';
 import 'dart:convert';
 
-class NursingRoom {
+void main() {
+  runApp(NursingRoomApp());
+}
+
+class NursingRoomApp extends StatelessWidget {
+  const NursingRoomApp({Key? key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Nursing Room App',
+      home: NursingRoomScreen(),
+    );
+  }
+}
+
+class NursingRoomScreen extends StatefulWidget {
+  @override
+  _NursingRoomScreenState createState() => _NursingRoomScreenState();
+}
+
+class _NursingRoomScreenState extends State<NursingRoomScreen> {
+  List<NursingRoomInfo> nursingRooms = [];
+  String serviceKey =
+      'a3GptWb07Pi1Gxv7GDsZ195JQT%2BehIA65OSl04QTsSyaxeTIMA6Y7ZMOa9tIv7ywXzaqW5lWgpU4fjoRTT1lDA%3D%3D';
+
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<List<NursingRoomInfo>> fetchNursingRoomData() async {
+    final apiUrl = Uri.parse(
+        'http://apis.data.go.kr/6260000/BusanNursingroomInfoService/getNursingroomInfo?serviceKey=$serviceKey&numOfRows=5&pageNo=1');
+
+    final queryParams = {
+      'serviceKey': serviceKey,
+      'numOfRows': '10',
+      'pageNo': '1',
+      'sj': '영도도서관',
+      'resultType': 'json', // XML 형식으로 요청
+    };
+
+    try {
+      print('Sending HTTP request...');
+      final response =
+          await http.get(apiUrl.replace(queryParameters: queryParams));
+
+      if (response.statusCode == 200) {
+        print('Received HTTP response.');
+        final document = xml.XmlDocument.parse(response.body);
+        final items = document.findAllElements('item');
+
+        final List<NursingRoomInfo> data = items.map((element) {
+          return NursingRoomInfo(
+            tel: element.findElements('tel').single.text,
+            sj: element.findElements('sj').single.text,
+            address: element.findElements('address').single.text,
+            place: element.findElements('place').single.text,
+            sido: element.findElements('sido').single.text,
+            sigungu: element.findElements('sigungu').single.text,
+            target: element.findElements('target').single.text,
+            father: element.findElements('father').single.text,
+            lng: double.parse(element.findElements('lng').single.text),
+            lat: double.parse(element.findElements('lat').single.text),
+            confirmDate: element.findElements('confirm_date').single.text,
+          );
+        }).toList();
+
+        return data;
+      } else {
+        throw Exception('Failed to load nursing room data');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Failed to fetch data');
+    }
+  }
+
+  Future<void> fetchData() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+
+      final data = await fetchNursingRoomData();
+      setState(() {
+        nursingRooms = data;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('오류 발생'),
+            content: Text('데이터를 불러오는 중 오류가 발생했습니다. 다시 시도해주세요.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+
+      print('Error: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          '부산 수유실',
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      ),
+      body: Center(
+        child: isLoading
+            ? CircularProgressIndicator()
+            : nursingRooms.isNotEmpty
+                ? NursingRoomList(nursingRooms: nursingRooms)
+                : Text('데이터가 없습니다.'),
+      ),
+    );
+  }
+}
+
+class NursingRoomList extends StatelessWidget {
+  final List<NursingRoomInfo> nursingRooms;
+
+  NursingRoomList({required this.nursingRooms});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: nursingRooms.length,
+      itemBuilder: (context, index) {
+        final item = nursingRooms[index];
+        return ListTile(
+          title: Text('이름: ${item.sj}'),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('주소: ${item.address}'),
+              Text('전화번호: ${item.tel}'),
+              Text('장소명: ${item.place}'),
+              Text('시도: ${item.sido}'),
+              Text('시군구: ${item.sigungu}'),
+              Text('타겟: ${item.target}'),
+              Text('아빠: ${item.father}'),
+              Text('확인일: ${item.confirmDate}'),
+              Text('위도: ${item.lng}'),
+              Text('경도: ${item.lat}'),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class NursingRoomInfo {
   final String sido;
   final String sigungu;
   final String sj;
@@ -15,7 +194,7 @@ class NursingRoom {
   final double lat;
   final String confirmDate;
 
-  NursingRoom({
+  NursingRoomInfo({
     required this.sido,
     required this.sigungu,
     required this.sj,
@@ -28,77 +207,4 @@ class NursingRoom {
     required this.lat,
     required this.confirmDate,
   });
-
-  factory NursingRoom.fromJson(Map<String, dynamic> json) {
-    return NursingRoom(
-      sido: json['sido'],
-      sigungu: json['sigungu'],
-      sj: json['sj'],
-      address: json['address'],
-      place: json['place'],
-      tel: json['tel'],
-      target: json['target'],
-      father: json['father'],
-      lng: double.parse(json['lng']),
-      lat: double.parse(json['lat']),
-      confirmDate: json['confirm_date'],
-    );
-  }
-}
-
-class MyApp extends StatelessWidget {
-  String serviceKey =
-      'a3GptWb07Pi1Gxv7GDsZ195JQT%2BehIA65OSl04QTsSyaxeTIMA6Y7ZMOa9tIv7ywXzaqW5lWgpU4fjoRTT1lDA%3D%3D';
-
-  Future<List<NursingRoom>> fetchNursingRooms() async {
-    final response = await http.get(
-      Uri.parse(
-          'http://apis.data.go.kr/6260000/BusanNursingroomInfoService/getNursingroomInfo?$serviceKey=인증키&numOfRows=5&pageNo=1'),
-      headers: {'Accept': 'application/json'},
-    );
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
-      final List<dynamic> items = data['body']['items'];
-
-      return items.map((item) => NursingRoom.fromJson(item)).toList();
-    } else {
-      throw Exception('Failed to load nursing rooms');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('수유실 보유 시설 현황'),
-        ),
-        body: FutureBuilder<List<NursingRoom>>(
-          future: fetchNursingRooms(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(child: Text('데이터가 없습니다.'));
-            } else {
-              final nursingRooms = snapshot.data!;
-              return ListView.builder(
-                itemCount: nursingRooms.length,
-                itemBuilder: (context, index) {
-                  final room = nursingRooms[index];
-                  return ListTile(
-                    title: Text('기관명: ${room.sj}'),
-                    subtitle: Text('주소: ${room.address}'),
-                    // 필요한 다른 정보들을 여기에 추가할 수 있습니다.
-                  );
-                },
-              );
-            }
-          },
-        ),
-      ),
-    );
-  }
 }
