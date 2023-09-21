@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart' as xml;
 import 'package:xml2json/xml2json.dart';
@@ -33,30 +34,29 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
         isLoading = false;
       });
     } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('오류 발생'),
-            content: Text('데이터를 불러오는 중 오류가 발생했습니다. 다시 시도해주세요.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('확인'),
-              ),
-            ],
-          );
-        },
-      );
-
+      showErrorDialog('데이터를 불러오는 중 오류가 발생했습니다. 다시 시도해주세요.');
       print('Error: $e');
     }
+  }
+
+  void showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('오류 발생'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<List<NursingRoomInfo>> fetchNursingRoomData() async {
@@ -71,7 +71,8 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
       'resultType': 'json',
     };
 
-    final response = await http.get(apiUrl);
+    final client = http.Client();
+    final response = await client.get(apiUrl);
 
     if (response.statusCode == 200) {
       final document = xml.XmlDocument.parse(response.body);
@@ -93,6 +94,7 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
         });
       }).toList();
 
+      client.close();
       return data;
     } else {
       throw Exception('Failed to load nursing room data');
@@ -101,9 +103,18 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: Scaffold(
+    return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'), // 영어 (미국)
+        const Locale('ko', 'KR'), // 한국어 (대한민국)
+        // 지원하는 다른 로캘을 여기에 추가하세요.
+      ],
+      title: '부산 수유실',
+      home: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Text(
