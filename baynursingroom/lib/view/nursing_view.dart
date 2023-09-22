@@ -4,9 +4,7 @@ import 'package:xml/xml.dart' as xml;
 import 'package:xml2json/xml2json.dart';
 import 'dart:convert';
 
-void main() {
-  runApp(NursingRoomApp());
-}
+
 
 class NursingRoomApp extends StatelessWidget {
   const NursingRoomApp({Key? key});
