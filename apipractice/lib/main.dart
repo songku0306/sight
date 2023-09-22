@@ -79,26 +79,28 @@ class _TodosWidgetState extends State<TodosWidget> {
  
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Todos>>(
-        future: futureTodos,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Column(
-              children: <Widget>[
-                ...snapshot.data!.map((e) => SizedBox(
-                  width: double.infinity,
-                  child: Card(
-                    elevation: 4,
-                    child: Text(e.title!),
-                  ),
-                )),
-              ],
-            );
-          } else if(snapshot.hasError) {
-            return Text('${snapshot.hasError}');
+    return Singl(
+      child: FutureBuilder<List<Todos>>(
+          future: futureTodos,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Column(
+                children: <Widget>[
+                  ...snapshot.data!.map((e) => SizedBox(
+                    width: double.infinity,
+                    child: Card(
+                      elevation: 4,
+                      child: Text(e.title!),
+                    ),
+                  )),
+                ],
+              );
+            } else if(snapshot.hasError) {
+              return Text('${snapshot.hasError}');
+            }
+            return const CircularProgressIndicator();
           }
-          return const CircularProgressIndicator();
-        }
+      ),
     );
   }
 }
