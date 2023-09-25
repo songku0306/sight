@@ -1,9 +1,11 @@
+import 'package:apipractice/screens/nursing_view.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart' as xml;
 import 'package:xml2json/xml2json.dart';
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 
 void main() {
   runApp(NursingRoomApp());
@@ -27,6 +29,8 @@ class NursingRoomScreen extends StatefulWidget {
 }
 
 class _NursingRoomScreenState extends State<NursingRoomScreen> {
+  Position? currentPosition;
+
   List<NursingRoomInfo> nursingRooms = [];
   String serviceKey =
       'a3GptWb07Pi1Gxv7GDsZ195JQT%2BehIA65OSl04QTsSyaxeTIMA6Y7ZMOa9tIv7ywXzaqW5lWgpU4fjoRTT1lDA%3D%3D';
@@ -36,7 +40,40 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
   @override
   void initState() {
     super.initState();
-    fetchData();
+    updateLocation(); // 앱 시작 시 현재 위치 정보 업데이트
+    fetchData(); // 데이터 가져오기
+  }
+
+  Future<void> _calculateDistance() async {
+    try {
+      if (currentPosition == null) {
+        currentPosition = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high,
+        );
+      }
+
+      nursingRooms.sort((a, b) {
+        // NursingRoom의 위도와 경도를 사용하여 거리 계산
+        double distanceA = Geolocator.distanceBetween(
+          currentPosition!.latitude,
+          currentPosition!.longitude,
+          a.lat,
+          a.lng,
+        );
+
+        double distanceB = Geolocator.distanceBetween(
+          currentPosition!.latitude,
+          currentPosition!.longitude,
+          b.lat,
+          b.lng,
+        );
+
+        // 거리를 기준으로 오름차순으로 정렬
+        return distanceA.compareTo(distanceB);
+      });
+    } catch (e) {
+      print('Error calculating distance: $e');
+    }
   }
 
   Future<List<NursingRoomInfo>> fetchNursingRoomData() async {
@@ -89,8 +126,10 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
   Future<void> fetchData() async {
     try {
       setState(() {
-        isLoading = true; // 데이터 로딩 시작
+        isLoading = true;
       });
+
+      await _calculateDistance(); // 거리 계산 함수 호출
 
       final response = await http.get(
         Uri.parse(
@@ -149,7 +188,11 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
       }
     } catch (e) {
       setState(() {
-        isLoading = false; // 데이터 로딩 실패
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
       });
 
       showDialog(
@@ -170,7 +213,7 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
         },
       );
 
-      print('Error:$e');
+      print('Error: $e');
     }
   }
 
@@ -179,11 +222,24 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text(
-          '부산 수유실',
-          style: TextStyle(
-            color: Colors.black,
-          ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '부산 수유실',
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+            if (currentPosition != null) // 현재 위치가 있을 때만 표시
+              Text(
+                '현재 위치: ${currentPosition!.latitude}, ${currentPosition!.longitude}',
+                style: TextStyle(
+                  fontSize: 12, // 텍스트 크기 조정
+                  color: Colors.grey, // 텍스트 색상 설정
+                ),
+              ),
+          ],
         ),
       ),
       body: Center(
@@ -195,71 +251,4 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
       ),
     );
   }
-}
-
-class NursingRoomList extends StatelessWidget {
-  final List<NursingRoomInfo> nursingRooms;
-
-  NursingRoomList({required this.nursingRooms});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: nursingRooms.length,
-      itemBuilder: (context, index) {
-        final item = nursingRooms[index];
-        return GestureDetector(
-          onTap: () {
-            // 리스트 타일을 터치할 때 토스트 메시지로 정보 표시
-            final message =
-                '이름: ${item.sj}\n장소명: ${item.place}\n주소: ${item.address}\n아빠: ${item.father}\n확인일: ${item.confirmDate}';
-            Fluttertoast.showToast(
-              msg: message,
-              toastLength: Toast.LENGTH_LONG,
-            );
-          },
-          child: ListTile(
-            title: Text('이름: ${item.sj}'),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('장소명: ${item.place}'),
-                Text('주소: ${item.address}'),
-                Text('아빠: ${item.father}'),
-                Text('확인일: ${item.confirmDate}'),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class NursingRoomInfo {
-  final String sido;
-  final String sigungu;
-  final String sj;
-  final String address;
-  final String place;
-  final String tel;
-  final String target;
-  final String father;
-  final double lng;
-  final double lat;
-  final String confirmDate;
-
-  NursingRoomInfo({
-    required this.sido,
-    required this.sigungu,
-    required this.sj,
-    required this.address,
-    required this.place,
-    required this.tel,
-    required this.target,
-    required this.father,
-    required this.lng,
-    required this.lat,
-    required this.confirmDate,
-  });
 }
