@@ -23,7 +23,8 @@ class NursingRoomScreen extends StatefulWidget {
 }
 
 class _NursingRoomScreenState extends State<NursingRoomScreen> {
-  String serviceKey = 'a3GptWb07Pi1Gxv7GDsZ195JQT%2BehIA65OSl04QTsSyaxeTIMA6Y7ZMOa9tIv7ywXzaqW5lWgpU4fjoRTT1lDA%3D%3D';
+  String serviceKey =
+      'a3GptWb07Pi1Gxv7GDsZ195JQT%2BehIA65OSl04QTsSyaxeTIMA6Y7ZMOa9tIv7ywXzaqW5lWgpU4fjoRTT1lDA%3D%3D';
   String apiUrl =
       'http://apis.data.go.kr/6260000/BusanNursingroomInfoService/getNursingroomInfo?serviceKey=$serviceKey&numOfRows=10&pageNo=1';
 
@@ -80,11 +81,12 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Nursing Room'),
+        title: const Text('Nursing Room'),
       ),
       body: Center(
-        child:
-            isLoading ? CircularProgressIndicator() : NursingRoomList(nursingRooms),
+        child: isLoading
+            ? const CircularProgressIndicator()
+            : NursingRoomList(nursingRooms),
       ),
     );
   }
@@ -115,36 +117,38 @@ class NursingRoomInfo {
     required this.lng,
     required this.lat,
     this.confirmDate,
-});
+  });
+}
 
 class NursingRoomList extends StatelessWidget {
-final List<NursingRoomInfo> nursingRooms;
+  final List<NursingRoomInfo> nursingRooms;
 
-NursingRoomList({required this.nursingRooms});
+  const NursingRoomList(List<NursingRoomInfo> nursingRooms,
+      {super.key, this.nursingRooms});
 
-@override
-Widget build(BuildContext context) {
-return ListView.builder(
-itemCount: nursingRooms.length,
-itemBuilder:(context, index){
-final room = nursingRooms[index];
-return ListTile(
-title : Text(room.sj ?? ''),
-subtitle : Column(
-crossAxisAlignment: CrossAxisAlignment.start,
-children: [
-Text('Address: ${room.address ?? ''}'),
-Text('Tel: ${room.tel ?? ''}'),
-Text('Place: ${room.place ?? ''}'),
-Text('Sido: ${room.sido ?? ''}'),
-Text('Sigungu: ${room.sigungu ?? ''}'),
-Text('Target: ${room.target ?? ''}'),
-Text('Father: ${room.father ?? ''}'),
-Text('Confirm Date:${room.confirmDate??''}')
-],
-),
-);
-},
-);
-}
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: nursingRooms?.length ?? 0,
+      itemBuilder: (context, index) {
+        final room = nursingRooms[index];
+        return ListTile(
+          title: Text(room.sj ?? ''),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Address: ${room.address ?? ''}'),
+              Text('Tel: ${room.tel ?? ''}'),
+              Text('Place: ${room.place ?? ''}'),
+              Text('Sido: ${room.sido ?? ''}'),
+              Text('Sigungu: ${room.sigungu ?? ''}'),
+              Text('Target: ${room.target ?? ''}'),
+              Text('Father: ${room.father ?? ''}'),
+              Text('Confirm Date: ${room.confirmDate ?? ''}')
+            ],
+          ),
+        );
+      },
+    );
+  }
 }
