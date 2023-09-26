@@ -1,10 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart'; // geocoding 패키지 추가
 
 class NursingRoomList extends StatelessWidget {
   final List<NursingRoomInfo> nursingRooms;
+  final Position? currentPosition;
 
-  NursingRoomList({required this.nursingRooms});
+  NursingRoomList({required this.nursingRooms, required this.currentPosition});
+
+  // 현재 위치를 주소로 변환하는 비동기 함수
+  Future<String> getAddressFromCoordinates() async {
+    if (currentPosition == null) {
+      return '알 수 없음';
+    }
+
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        currentPosition!.latitude,
+        currentPosition!.longitude,
+      );
+
+      if (placemarks.isNotEmpty) {
+        Placemark placemark = placemarks.first;
+        return placemark.street.toString(); // xx동을 포함하는 주소
+      }
+    } catch (e) {
+      print('Error getting address: $e');
+    }
+
+    return '알 수 없음';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +39,12 @@ class NursingRoomList extends StatelessWidget {
       itemBuilder: (context, index) {
         final item = nursingRooms[index];
         return GestureDetector(
-          onTap: () {
+          onTap: () async {
             final message =
                 '이름: ${item.sj}\n장소명: ${item.place}\n주소: ${item.address}\n아빠: ${item.father}';
+            String currentAddress = await getAddressFromCoordinates();
             Fluttertoast.showToast(
-              msg: message,
+              msg: '현재 위치: $currentAddress\n$message',
               toastLength: Toast.LENGTH_LONG,
             );
           },
@@ -29,10 +56,9 @@ class NursingRoomList extends StatelessWidget {
                 borderRadius: BorderRadius.circular(25),
               ),
               child: ListTile(
-                
                 tileColor: Colors.indigo,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25), // 이 부분에서 둥근 모서리 설정
+                  borderRadius: BorderRadius.circular(25),
                 ),
                 title: Text(
                   '이름: ${item.sj}',
@@ -80,6 +106,9 @@ class NursingRoomList extends StatelessWidget {
     );
   }
 }
+
+// 나머지 코드는 동일하게 유지
+
 
 class NursingRoomInfo {
   final String sido;

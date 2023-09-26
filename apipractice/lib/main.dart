@@ -44,6 +44,23 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
     fetchData(); // 데이터 가져오기
   }
 
+  Future<void> updateLocation() async {
+    try {
+      // 위치 업데이트 요청
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      // 위치 업데이트가 완료되면 상태 업데이트
+      setState(() {
+        currentPosition = position;
+      });
+    } catch (e) {
+      // 위치 업데이트 중에 오류가 발생하면 처리
+      print('Error updating location: $e');
+    }
+  }
+
   Future<void> _calculateDistance() async {
     try {
       if (currentPosition == null) {
@@ -190,11 +207,6 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
       setState(() {
         isLoading = false;
       });
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -246,7 +258,10 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
         child: isLoading
             ? CircularProgressIndicator()
             : nursingRooms.isNotEmpty
-                ? NursingRoomList(nursingRooms: nursingRooms)
+                ? NursingRoomList(
+                    nursingRooms: nursingRooms,
+                    currentPosition: currentPosition,
+                  )
                 : Text('데이터가 없습니다.'), // 데이터가 없는 경우에 메시지 출력
       ),
     );
