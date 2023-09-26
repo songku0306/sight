@@ -1,4 +1,3 @@
-import 'package:apioffline/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
@@ -95,14 +94,14 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
 
   Future<List<NursingRoomInfo>> fetchNursingRoomData() async {
     final apiUrl = Uri.parse(
-        'http://apis.data.go.kr/6260000/BusanNursingroomInfoService/getNursingroomInfo?serviceKey=$serviceKey&numOfRows=5&pageNo=1');
+        'http://apis.data.go.kr/6260000/BusanNursingroomInfoService/getNursingroomInfo');
 
     final queryParams = {
       'serviceKey': serviceKey,
-      'numOfRows': '10',
+      'numOfRows': '400',
       'pageNo': '1',
       'sj': '영도도서관',
-      'resultType': 'json', // XML 형식으로 요청
+      'resultType': 'xml', // XML 형식으로 요청
     };
 
     final response =
@@ -138,47 +137,83 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
     }
   }
 
-// ...
-Future<void> fetchData() async {
-  try {
-    setState(() {
-      isLoading = true;
-    });
+  // ...
 
-    await _calculateDistance(); // 거리 계산 함수 호출
+  Future<void> fetchData() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
 
-    final data = await ApiService().fetchNursingRoomData();
+      await _calculateDistance(); // 거리 계산 함수 호출
 
-    setState(() {
-      nursingRooms = data; // nursingRooms에 데이터 저장
-      isLoading = false; // 데이터 로딩 완료
-    });
-  } catch (e) {
-    setState(() {
-      isLoading = false;
-    });
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('오류 발생'),
-          content: Text('데이터를 불러오는 중 오류가 발생했습니다. 다시 시도해주세요.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('확인'),
-            ),
-          ],
-        );
-      },
-    );
+      final apiUrl = Uri.parse(
+          'http://apis.data.go.kr/6260000/BusanNursingroomInfoService/getNursingroomInfo');
 
-    print('Error: $e');
+      final queryParams = {
+        'serviceKey': serviceKey,
+        'numOfRows': '400',
+        'pageNo': '1',
+        'sj': '영도도서관',
+        'resultType': 'xml', // XML 형식으로 요청
+      };
+
+      final response =
+          await http.get(apiUrl.replace(queryParameters: queryParams));
+
+      if (response.statusCode == 200) {
+        // XML 데이터를 처리하는 코드 추가
+        final document = xml.XmlDocument.parse(response.body);
+        final items = document.findAllElements('item');
+
+        final List<NursingRoomInfo> data = items.map((element) {
+          return NursingRoomInfo(
+            tel: element.findElements('tel').single.text,
+            sj: element.findElements('sj').single.text,
+            address: element.findElements('address').single.text,
+            place: element.findElements('place').single.text,
+            sido: element.findElements('sido').single.text,
+            sigungu: element.findElements('sigungu').single.text,
+            target: element.findElements('target').single.text,
+            father: element.findElements('father').single.text,
+            lng: double.parse(element.findElements('lng').single.text),
+            lat: double.parse(element.findElements('lat').single.text),
+            confirmDate: element.findElements('confirm_date').single.text,
+          );
+        }).toList();
+
+        setState(() {
+          nursingRooms = data; // nursingRooms에 데이터 저장
+          isLoading = false; // 데이터 로딩 완료
+        });
+      } else {
+        throw Exception('Failed to load nursing room data');
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('오류 발생'),
+            content: Text('데이터를 불러오는 중 오류가 발생했습니다. 다시 시도해주세요.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+
+      print('Error: $e');
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -322,9 +357,6 @@ class NursingRoomList extends StatelessWidget {
     );
   }
 }
-
-// 나머지 코드는 동일하게 유지
-
 
 class NursingRoomInfo {
   final String sido;

@@ -1,4 +1,3 @@
-import 'package:apipractice/screens/nursing_view.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
@@ -100,10 +99,10 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
 
     final queryParams = {
       'serviceKey': serviceKey,
-      'numOfRows': '10',
-      'pageNo': '1',
+      'numOfRows': 400,
+      'pageNo': 1,
       'sj': '영도도서관',
-      'resultType': 'json', // XML 형식으로 요청
+      'resultType': json, // XML 형식으로 요청
     };
 
     final response =
@@ -372,9 +371,7 @@ class NursingRoomList extends StatelessWidget {
     );
   }
 }
-
 // 나머지 코드는 동일하게 유지
-
 
 class NursingRoomInfo {
   final String sido;
