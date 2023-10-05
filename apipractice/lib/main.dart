@@ -148,9 +148,10 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
 
       await _calculateDistance(); // 거리 계산 함수 호출
 
+      final numofrow = 30;
       final response = await http.get(
         Uri.parse(
-            'http://apis.data.go.kr/6260000/BusanNursingroomInfoService/getNursingroomInfo?serviceKey=$serviceKey&numOfRows=5&pageNo=1'),
+            'http://apis.data.go.kr/6260000/BusanNursingroomInfoService/getNursingroomInfo?serviceKey=$serviceKey&numOfRows=$numofrow&pageNo=1'),
       );
 
       if (response.statusCode == 200) {
