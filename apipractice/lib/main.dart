@@ -30,7 +30,8 @@ class NursingRoomScreen extends StatefulWidget {
 
 class _NursingRoomScreenState extends State<NursingRoomScreen> {
   Position? currentPosition;
-
+  int pageNo = 1; // 현재 페이지 번호
+  final int numOfRows = 15; // 한 페이지에 가져올 데이터 개수
   List<NursingRoomInfo> nursingRooms = [];
   String serviceKey =
       'a3GptWb07Pi1Gxv7GDsZ195JQT%2BehIA65OSl04QTsSyaxeTIMA6Y7ZMOa9tIv7ywXzaqW5lWgpU4fjoRTT1lDA%3D%3D';
@@ -88,6 +89,11 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
         // 거리를 기준으로 오름차순으로 정렬
         return distanceA.compareTo(distanceB);
       });
+
+      // 정렬된 nursingRooms를 상태에 업데이트
+      setState(() {
+        nursingRooms = nursingRooms;
+      });
     } catch (e) {
       print('Error calculating distance: $e');
     }
@@ -138,23 +144,18 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
     }
   }
 
-// ...
-
   Future<void> fetchData() async {
     try {
       setState(() {
         isLoading = true;
       });
 
-      await _calculateDistance(); // 거리 계산 함수 호출
-
-      final numofrow = 30;
-      final response = await http.get(
-        Uri.parse(
-            'http://apis.data.go.kr/6260000/BusanNursingroomInfoService/getNursingroomInfo?serviceKey=$serviceKey&numOfRows=$numofrow&pageNo=1'),
-      );
+      final numofrow = 18;
+      final response = await http.get(Uri.parse(
+          'http://apis.data.go.kr/6260000/BusanNursingroomInfoService/getNursingroomInfo?serviceKey=$serviceKey&numOfRows=$numOfRows&pageNo=1'));
 
       if (response.statusCode == 200) {
+        // 데이터를 가져왔을 때에만 거리 계산 및 정렬을 수행합니다.
         String responseBody = response.body;
 
         if (responseBody.contains('<')) {
@@ -195,6 +196,10 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
         if (itemList is List) {
           final List<NursingRoomInfo> data =
               itemList.map((item) => parseItem(item)).toList();
+
+          // 가져온 데이터에 대해 거리 계산 및 정렬을 수행합니다.
+          nursingRooms = data;
+          await _calculateDistance();
 
           setState(() {
             nursingRooms = data; // nursingRooms에 데이터 저장
@@ -322,16 +327,12 @@ class NursingRoomList extends StatelessWidget {
                 borderRadius: BorderRadius.circular(25),
               ),
               child: ListTile(
-                tileColor: Colors.indigo,
+                titleTextStyle: TextStyle(color: Colors.white),
+                tileColor: Colors.indigoAccent,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25),
                 ),
-                title: Text(
-                  '이름: ${item.sj}',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
+                title: Text('이름: ${item.sj}'),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -340,27 +341,19 @@ class NursingRoomList extends StatelessWidget {
                     ),
                     Text(
                       '장소명: ${item.place}',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                      style: TextStyle(color: Colors.white),
                     ),
                     Text(
                       '주소: ${item.address}',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                      style: TextStyle(color: Colors.white),
                     ),
                     Text(
                       '아빠: ${item.father}',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                      style: TextStyle(color: Colors.white),
                     ),
                     Text(
                       '확인일: ${item.confirmDate}',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                      style: TextStyle(color: Colors.white),
                     ),
                   ],
                 ),
