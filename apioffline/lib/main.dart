@@ -98,8 +98,8 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
 
     final queryParams = {
       'serviceKey': serviceKey,
-      'numOfRows': '400',
-      'pageNo': '1',
+      'numOfRows': 400,
+      'pageNo': 10,
       'sj': '영도도서관',
       'resultType': 'xml', // XML 형식으로 요청
     };
