@@ -1,3 +1,4 @@
+import 'package:apioffline/units.dart';
 import 'package:flutter/material.dart';
 
 class NursingRoomApp extends StatelessWidget {
@@ -52,43 +53,12 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
         child: Stack(
           children: [
             DiagonalBackgroundScreen(),
-            Center(
-              child: Container(
-                height: 130,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('장소명', style: TextStyle(fontSize: 30)),
-                          Text('확인일:2020/12/30'),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('주소 : ', style: TextStyle(fontSize: 20)),
-                          Text('주소 / '),
-                          Text('위치'),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('아빠가능 : 가능'),
-                          Text('주소 / '),
-                          Text('위치'),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: SingleChildScrollView(
+                child: NursingFrame(),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -100,23 +70,6 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
       //             currentPosition: currentPosition,
       //           )
       //         : Text('데이터가 없습니다.'), // 데이터가 없는 경우에 메시지 출력
-    );
-  }
-}
-
-class DiagonalBackgroundScreen extends StatelessWidget {
-  const DiagonalBackgroundScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomCenter,
-          colors: [Colors.blue, Colors.blueGrey],
-        ),
-      ),
     );
   }
 }
