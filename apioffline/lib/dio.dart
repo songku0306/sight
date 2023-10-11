@@ -32,8 +32,8 @@ class _NursingScreenState extends State<NursingScreen> {
 
   Future<void> _getCurrentLocation() async {
     try {
-      Position currentLocation =
-          await Geolocator.getCurrentPosition(); // getCurrentPosition 사용
+      Position currentLocation = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high); // getCurrentPosition 사용
       String currentAddress = await getAddressFromLocation(currentLocation);
       setState(() {
         address = currentAddress;
