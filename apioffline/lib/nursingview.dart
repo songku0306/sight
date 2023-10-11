@@ -28,8 +28,8 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.indigo,
-        title: Row(
+        backgroundColor: Colors.white,
+        title: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
@@ -49,14 +49,20 @@ class _NursingRoomScreenState extends State<NursingRoomScreen> {
           ],
         ),
       ),
-      body: Center(
+      body: const Center(
         child: Stack(
           children: [
             DiagonalBackgroundScreen(),
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(10.0),
               child: SingleChildScrollView(
-                child: NursingFrame(),
+                child: Column(
+                  children: [
+                    NursingFrame(),
+                    SizedBox(height: 10),
+                    NursingFrame(),
+                  ],
+                ),
               ),
             ),
           ],

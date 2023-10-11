@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
+String place_name = '사하구건강가정지원센터공동육아나눔터';
+String confirm_date = '확인일:2020/12/30';
+String adress_one = '부산 해운대구 해운대로 지하 396 (우동, 부산지하철 시립미술관역)';
+String adress_two = '고객센터 옆';
+String father = '가능';
+
 class NursingFrame extends StatelessWidget {
-  const NursingFrame({
-    super.key,
-  });
+  const NursingFrame({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,33 +21,32 @@ class NursingFrame extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: Text(
-                    '사하구건강가정지원센터공동육아나눔터',
+                    place_name,
                     style: TextStyle(fontSize: 30),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                Text('확인일:2020/12/30'),
+                Text(confirm_date),
               ],
             ),
             Row(
               children: [
                 Text('주소 : ', style: TextStyle(fontSize: 20)),
-                Expanded(
-                    child: Text(
-                        '부산 해운대구 해운대로 지하 396 (우동, 부산지하철 시립미술관역)' + '고객센터 옆')),
+                Expanded(child: Text(adress_one + adress_two)),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('아빠가능 : 가능'),
+                Text('아빠가능 : $father'),
                 Text('주소 복사 '),
               ],
             ),
@@ -64,7 +67,7 @@ class DiagonalBackgroundScreen extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomCenter,
-          colors: [Colors.blue, Colors.blueGrey],
+          colors: [Colors.blue, Colors.indigo],
         ),
       ),
     );
