@@ -2,7 +2,7 @@ import 'package:apioffline/nursingview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 
-String place_name = '사하구건강가정지원센터공동육아나눔터';
+String place_name = '사1하구건강가정지원센터공동육아나눔터';
 String confirm_date = '확인일:2020/12/30';
 String adress_one = '부산 해운대구 해운대로 지하 396 (우동, 부산지하철 시립미술관역)';
 String adress_two = '고객센터 옆';
