@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:flutter/services.dart';
+
 
 void main() {
   runApp(NpractApp());
@@ -22,52 +24,58 @@ class NursingScreen extends StatefulWidget {
 }
 
 class _NursingScreenState extends State<NursingScreen> {
-  String address = "로딩 중...";
-
-  @override
-  void initState() {
-    super.initState();
-    _getCurrentLocation();
+  Future<List<dynamic>> fetchData() async {
+    String data = await rootBundle.loadString(assets/data.svc);
+    List<dynamic> jsonData = json.decode(data);
+    return jsonData;
   }
 
-  Future<void> _getCurrentLocation() async {
-    try {
-      Position currentLocation = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high); // getCurrentPosition 사용
-      String currentAddress = await getAddressFromLocation(currentLocation);
-      setState(() {
-        address = currentAddress;
-      });
-    } catch (e) {
-      setState(() {
-        address = "위치 정보를 가져오는 데 실패했습니다.";
-      });
-    }
-  }
-
-  Future<String> getAddressFromLocation(Position position) async {
-    // 주소 변환 로직 구현 필요
-    // 위치 정보(position)을 주소로 변환하는 로직 작성 (geocoding 패키지 활용)
-    // 예시 코드:
-    List<Placemark> placemarks = await placemarkFromCoordinates(
-      position.latitude,
-      position.longitude,
-    );
-    Placemark placeMark = placemarks.first;
-    String address =
-        '${placeMark.country}, ${placeMark.administrativeArea}, ${placeMark.locality}, ${placeMark.thoroughfare}';
-
-    return address;
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('place : $address'),
+        title: Text('place :'),
       ),
       body: Center(
         child: CircularProgressIndicator(),
+      ),
+    );
+  }
+}
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('서버 데이터 리스트'),
+        ),
+        body: FutureBuilder<List<dynamic>>(
+          future: fetchData(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text('데이터를 불러오는 중에 오류가 발생했습니다: ${snapshot.error}');
+            } else {
+              // 가져온 데이터를 활용하여 UI 리스트를 구성합니다.
+              List? data = snapshot.data;
+              return ListView.builder(
+                itemCount: data.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(data[index]['title']),
+                    subtitle: Text(data[index]['subtitle']),
+                    // 원하는 데이터 필드를 가져와서 표시할 수 있습니다.
+                  );
+                },
+              );
+            }
+          },
+        ),
       ),
     );
   }
